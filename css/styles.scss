@@ -1,0 +1,36 @@
+$tileBackgroundColor: grey;
+
+body {
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    padding-top: 2vh;
+}
+
+.main-container {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 5px 5px 14px $tileBackgroundColor;
+    margin-top: 1.25rem;
+
+    background-color: $tileBackgroundColor;
+}
+
+.main-container--tilerow {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.main-container--tile {
+    border: 1px outset black;
+    height: 2rem;
+    width: 2rem;
+}
+
+.main-container--red {
+    background-color: red;
+}
