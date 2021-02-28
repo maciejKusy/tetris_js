@@ -9,9 +9,21 @@ export class Controller {
     }
 
     handleArrowDown = keyEvent => {
-        if (keyEvent.keyCode === 40) {
+        let keyPressed = keyEvent.keyCode;
+
+        if (keyPressed === 40) {
+            if (this.model.checkDownMove()) {
+                this.view.derenderShape(this.model.tilesActive);
+                this.model.moveCurrentShapeDown();
+            }
+            this.view.renderCurrentShape(this.model.tilesActive);
+        } else if (keyPressed === 37) {
             this.view.derenderShape(this.model.tilesActive);
-            this.model.moveCurrentShapeDown();
+            this.model.moveCurrentShapeLeft();
+            this.view.renderCurrentShape(this.model.tilesActive);
+        } else if (keyPressed === 39) {
+            this.view.derenderShape(this.model.tilesActive);
+            this.model.moveCurrentShapeRight();
             this.view.renderCurrentShape(this.model.tilesActive);
         }
     }
