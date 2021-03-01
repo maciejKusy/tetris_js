@@ -5,10 +5,10 @@ export class Controller {
         this.view.tiles = this.model.tiles;
         this.view.renderCurrentShape(this.model.tilesActive);        
 
-        document.addEventListener("keydown", this.handleArrowDown);
+        document.addEventListener("keydown", this.handleArrowPress);
     }
 
-    handleArrowDown = keyEvent => {
+    handleArrowPress = keyEvent => {
         let keyPressed = keyEvent.keyCode;
 
         if (keyPressed === 40) {
@@ -24,6 +24,10 @@ export class Controller {
         } else if (keyPressed === 39) {
             this.view.derenderShape(this.model.tilesActive);
             this.model.moveCurrentShapeRight();
+            this.view.renderCurrentShape(this.model.tilesActive);
+        } else if (keyPressed === 38) {
+            this.view.derenderShape(this.model.tilesActive);
+            this.model.rotateCurrentShape();
             this.view.renderCurrentShape(this.model.tilesActive);
         }
     }
