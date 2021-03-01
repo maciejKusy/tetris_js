@@ -3,6 +3,7 @@ export class Controller {
         this.model = model;
         this.view = view;       
         this.view.tiles = this.model.tiles;
+        this.view.derenderRightBorder();
         this.view.renderCurrentShape(this.model.tilesActive);        
 
         document.addEventListener("keydown", this.handleArrowPress);

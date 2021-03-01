@@ -4,6 +4,12 @@ export class GameView {
         this.tiles = null;
     }
 
+    derenderRightBorder = () => {
+        for (let coordinate = 11; coordinate <= 220; coordinate += 11) {
+            this.tiles.get(coordinate).avatar.classList.add("main-container__tile--hidden");
+        }
+    }
+
     derenderShape = shape => {
         for (const index of shape) {
             this.tiles.get(index).avatar.classList.remove("main-container--red");

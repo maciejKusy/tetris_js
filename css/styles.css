@@ -31,7 +31,7 @@ body {
   background-color: grey;
 }
 
-.main-container--tilerow {
+.main-container__tilerow {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -44,10 +44,14 @@ body {
           flex-direction: row;
 }
 
-.main-container--tile {
+.main-container__tile {
   border: 1px outset black;
   height: 2rem;
   width: 2rem;
+}
+
+.main-container__tile--hidden {
+  display: none;
 }
 
 .main-container--red {
