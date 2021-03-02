@@ -21,4 +21,16 @@ export class GameView {
             this.tiles.get(index).avatar.classList.add("main-container--red");
         }
     }
+
+    derenderOccupiedTiles = () => {
+        this.tiles.forEach(function(tile) {
+            if (tile.occupied) {tile.avatar.classList.remove("main-container--red");}
+        })
+    }
+
+    renderOccupiedTiles = () => {
+        this.tiles.forEach(function(tile) {
+            if (tile.occupied) {tile.avatar.classList.add("main-container--red")}
+        })
+    }
 }

@@ -37,7 +37,6 @@ export class GameField {
     checkDownMove = () => {
         for (const coordinate of this.tilesActive) {
             if ((coordinate + 11) > 220 || this.tiles.get(coordinate + 11).occupied && !this.tilesActive.includes(coordinate + 11)) {
-                this.setUpNewShape();
                 return false;
             }
         } return true;
@@ -90,8 +89,51 @@ export class GameField {
         }
     }
 
-    checkFullLines = () => {
-        return
+    checkForAnyFullRows = () => {
+        for (let index = 210; index >= 1; index -= 11) {
+            if (this.checkIfRowFull(index)) {
+                return true;
+            }
+        } return false;
+    }
+
+    removeFullRows = () => {
+        for (let index = 210; index >= 1; index -= 11) {
+            if (this.checkIfRowFull(index)) {
+                this.deoccupyRow(index);
+                this.moveAllOccupiedDown(index);
+            }
+        }
+    }
+
+    checkIfRowFull = startingIndex => {
+        let start = startingIndex;
+        let stop = start + 10;
+
+        for (let index = start; index < stop; index++) {
+            if (!this.tiles.get(index).occupied) {return false;}
+        } return true;
+    }
+
+    moveAllOccupiedDown = borderIndex => {
+        for (let index = (borderIndex - 1); index >= 1; index--) {
+            if (this.tiles.get(index).occupied) {
+                this.tiles.get(index).occupied = false;
+                console.log(this.tiles.get(index).occupied + index.toString());
+                if (index + 11 > 220) {
+                    this.tiles.get(index + 11).occupied = true;
+                }
+            }
+        }
+    }
+
+    deoccupyRow = startingIndex => {
+        let start = startingIndex;
+        let stop = start + 10;
+
+        for (let index = start; index < stop; index++) {
+            this.tiles.get(index).occupied = false;
+        }
     }
 
     checkRotationAvailability = (coordinates) => {

@@ -16,6 +16,13 @@ export class Controller {
             if (this.model.checkDownMove()) {
                 this.view.derenderShape(this.model.tilesActive);
                 this.model.moveCurrentShapeDown();
+            } else {
+                if (this.model.checkForAnyFullRows()) {
+                    this.view.derenderOccupiedTiles();
+                    this.model.removeFullRows();
+                    this.view.renderOccupiedTiles();
+                }
+                this.model.setUpNewShape();
             }
             this.view.renderCurrentShape(this.model.tilesActive);
         } else if (keyPressed === 37) {
