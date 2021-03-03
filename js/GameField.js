@@ -5,7 +5,7 @@ export class GameField {
     constructor() {
         this.tiles = new Map();
         this.createTileMap();
-        this.currentShape = null;
+        this.nextShape = this.getRandomShape();
         this.tilesActive = null;
         this.setUpNewShape();
     }
@@ -31,9 +31,11 @@ export class GameField {
      * Updates the current shape and active tiles;
      */
     setUpNewShape = () => {
-        this.currentShape = this.getRandomShape();
+        this.currentShape = this.nextShape;
         this.currentShape.rotationState = Angles.DEFAULT;
         this.tilesActive = this.currentShape.coordinates;
+        this.activateTiles(this.currentShape.coordinates);
+        this.nextShape = this.getRandomShape();
     }
 
     /**
@@ -43,7 +45,6 @@ export class GameField {
         const shapes = this.getShapes();
         let index = Math.floor(Math.random() * 5);
         let selectedShape = shapes[index];
-        this.activateTiles(selectedShape.coordinates);
         return selectedShape;
     }
 

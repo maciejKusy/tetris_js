@@ -50,4 +50,9 @@ export class GameView {
             if (tile.occupied) {tile.avatar.classList.add("main-container--red")}
         })
     }
+
+    renderNextShape = shape => {
+        const display = document.getElementById('next-shape-display');
+        display.textContent = shape.name;
+    }
 }

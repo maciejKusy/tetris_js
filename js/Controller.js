@@ -27,6 +27,7 @@ export class Controller {
                     this.view.renderOccupiedTiles();
                 }
                 this.model.setUpNewShape();
+                this.view.renderNextShape(this.model.nextShape);
             }
             this.view.renderCurrentShape(this.model.tilesActive);
         } else if (keyPressed === 37) {

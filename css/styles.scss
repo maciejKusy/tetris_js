@@ -3,7 +3,8 @@ $tileBackgroundColor: grey;
 body {
     background-size: cover;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-evenly;
     align-items: center;
     height: 100%;
     padding-top: 2vh;
@@ -15,6 +16,15 @@ body {
     align-items: center;
     box-shadow: 5px 5px 14px $tileBackgroundColor;
     margin-top: 1.25rem;
+
+    background-color: $tileBackgroundColor;
+}
+
+.side-container {
+    box-shadow: 5px 5px 14px $tileBackgroundColor;
+    height: 80vh;
+    margin-top: 1.25rem;
+    width: 25vw;
 
     background-color: $tileBackgroundColor;
 }
