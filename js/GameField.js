@@ -116,11 +116,10 @@ export class GameField {
     }
 
     moveAllOccupiedDown = borderIndex => {
-        for (let index = (borderIndex - 1); index >= 1; index--) {
+        for (let index = (borderIndex - 2); index >= 1; index--) {
             if (this.tiles.get(index).occupied) {
                 this.tiles.get(index).occupied = false;
-                console.log(this.tiles.get(index).occupied + index.toString());
-                if (index + 11 > 220) {
+                if (index + 11 < 220) {
                     this.tiles.get(index + 11).occupied = true;
                 }
             }

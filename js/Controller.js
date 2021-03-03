@@ -17,7 +17,7 @@ export class Controller {
                 this.view.derenderShape(this.model.tilesActive);
                 this.model.moveCurrentShapeDown();
             } else {
-                if (this.model.checkForAnyFullRows()) {
+                while (this.model.checkForAnyFullRows()) {
                     this.view.derenderOccupiedTiles();
                     this.model.removeFullRows();
                     this.view.renderOccupiedTiles();
