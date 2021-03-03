@@ -10,22 +10,35 @@ export class GameField {
         this.setUpNewShape();
     }
 
+    /**
+     * Creates a Map instance containing the numbers (addresses) of all the tiles and assigns relevant 
+     * DOM elements to those tiles;
+     */
     createTileMap = () => {
         for (let tileNumber = 1; tileNumber <= 220; tileNumber++) {
             this.tiles.set(tileNumber, new Tile(document.getElementById(tileNumber.toString())));
         }
     }
 
+    /**
+     * Returns all the available shapes (starting coordinates);
+     */
     getShapes = () => {
         return [Shapes.TRIANGLE, Shapes.SQUARE, Shapes.BAR, Shapes.STEP, Shapes.EL];
     }
 
+    /**
+     * Updates the current shape and active tiles;
+     */
     setUpNewShape = () => {
         this.currentShape = this.getRandomShape();
         this.currentShape.rotationState = Angles.DEFAULT;
         this.tilesActive = this.currentShape.coordinates;
     }
 
+    /**
+     * Randomly selects a shape (a set of astarting coordinates) from the available pool;
+     */
     getRandomShape = () => {
         const shapes = this.getShapes();
         let index = Math.floor(Math.random() * 5);
@@ -34,6 +47,9 @@ export class GameField {
         return selectedShape;
     }
 
+    /**
+     * Verifies whether a move further down the field is possible or not;
+     */
     checkDownMove = () => {
         for (const coordinate of this.tilesActive) {
             if ((coordinate + 11) > 220 || this.tiles.get(coordinate + 11).occupied && !this.tilesActive.includes(coordinate + 11)) {
@@ -42,6 +58,9 @@ export class GameField {
         } return true;
     }
 
+    /**
+     * Moves the currently active shape down by adjusting the coordinates of active tiles;
+     */
     moveCurrentShapeDown = () => {
         let tiles = [];
         this.deactivateTiles(this.tilesActive);
@@ -50,6 +69,10 @@ export class GameField {
         this.activateTiles(this.tilesActive);
     }
 
+    /**
+     * Verifies whether a move further to the left is possible (by using the coordinates of the invisible column)
+     * and if so, moves the active shape by adjusting the coordinates of active tiles;
+     */
     moveCurrentShapeLeft = () => {
         for (const coordinate of this.tilesActive) {
             if (coordinate % 11 === 1 || this.tiles.get(coordinate - 1).occupied && !this.tilesActive.includes(coordinate - 1)) {return}
@@ -62,6 +85,9 @@ export class GameField {
         this.activateTiles(this.tilesActive);
     }
 
+    /**
+     * Same as move left but in the other direction;
+     */
     moveCurrentShapeRight = () => {
         for (const coordinate of this.tilesActive) {
             if (coordinate % 11 === 10 || this.tiles.get(coordinate + 1).occupied  && !this.tilesActive.includes(coordinate + 1)) {return}
@@ -74,6 +100,10 @@ export class GameField {
         this.activateTiles(this.tilesActive);
     }
 
+    /**
+     * Deactivates the currently active tiles so their coordinates can be adjusted;
+     * @param {Array} coordinates - the coordinates of the current active tiles (so the currently active shape);
+     */
     deactivateTiles = coordinates => {
         for (const coordinate of coordinates) {
             this.tiles.get(coordinate).occupied = false;
@@ -81,6 +111,10 @@ export class GameField {
         }
     }
 
+    /**
+     * Activates the current shape coordinates;
+     * @param {Array} coordinates - the coordinates of the current active tiles (so the currently active shape);
+     */
     activateTiles = coordinates => {
         for (const coordinate of coordinates) {
             let selectedTile = this.tiles.get(coordinate)
@@ -89,6 +123,10 @@ export class GameField {
         }
     }
 
+    /**
+     * Verifies whether there are any full rows on the field - counting from the furthest row down (210)
+     * so that overall checking time is reduced slightly;
+     */
     checkForAnyFullRows = () => {
         for (let index = 210; index >= 1; index -= 11) {
             if (this.checkIfRowFull(index)) {
@@ -97,6 +135,9 @@ export class GameField {
         } return false;
     }
 
+    /**
+     * Targets and removes any full rows from the field;
+     */
     removeFullRows = () => {
         for (let index = 210; index >= 1; index -= 11) {
             if (this.checkIfRowFull(index)) {
@@ -106,6 +147,11 @@ export class GameField {
         }
     }
 
+    /**
+     * Verifies whether a particular row in the field matrix is full or not;
+     * @param {number} startingIndex - the 'starting' index of the row that is checked - the 'first from the left'
+     * tile in a given row;
+     */
     checkIfRowFull = startingIndex => {
         let start = startingIndex;
         let stop = start + 10;
@@ -115,6 +161,10 @@ export class GameField {
         } return true;
     }
 
+    /**
+     * Moves the 'occupied' status 'down' for all tiles above a given border tile (the start of a full row);
+     * @param {number} borderIndex - the start ('first ftrom the left') position of the full row;
+     */
     moveAllOccupiedDown = borderIndex => {
         for (let index = (borderIndex - 2); index >= 1; index--) {
             if (this.tiles.get(index).occupied) {
@@ -126,6 +176,10 @@ export class GameField {
         }
     }
 
+    /**
+     * Removes the 'occupied' status from all the tiles in a given matrix row;
+     * @param {number} startingIndex - the first tile of a given row;
+     */
     deoccupyRow = startingIndex => {
         let start = startingIndex;
         let stop = start + 10;
@@ -135,6 +189,10 @@ export class GameField {
         }
     }
 
+    /**
+     * Checks whether it is possible to rotate the current shape ie. by using the invisible 11th column;
+     * @param {Array} coordinates - the coordinates of the currently active shape;
+     */
     checkRotationAvailability = (coordinates) => {
         for (const coordinate of coordinates) {
             if (coordinate % 11 === 0 || coordinate > 220 || coordinate < 1 || this.tiles.get(coordinate).occupied && !this.tilesActive.includes(coordinate)) {
@@ -143,6 +201,9 @@ export class GameField {
         } return true;
     }
 
+    /**
+     * Depending on the name of the current shape runs the reelevant rotation method adjusting the shape opsition;
+     */
     rotateCurrentShape = () => {
         switch (this.currentShape.name) {
             case "TRIANGLE":

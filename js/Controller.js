@@ -9,6 +9,10 @@ export class Controller {
         document.addEventListener("keydown", this.handleArrowPress);
     }
 
+    /**
+     * Runs the relevant operation (move or rotation) based on user keyboard input;
+     * @param {Event} keyEvent - the key being pressed event;
+     */
     handleArrowPress = keyEvent => {
         let keyPressed = keyEvent.keyCode;
 
