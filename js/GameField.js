@@ -7,7 +7,18 @@ export class GameField {
         this.createTileMap();
         this.nextShape = this.getRandomShape();
         this.tilesActive = null;
+        this.timeBetweenFalls = 1000;
+        this.score = 0;
         this.setUpNewShape();
+    }
+
+    /**
+     * Verifies whether any blocks in the 'first row from the top' are occupied;
+     */
+    checkIfGameOver = () => {
+        for (let index = 1; index <= 10; index++) {
+            if (this.tiles.get(index).occupied) {return true;}
+        } return false;
     }
 
     /**
@@ -143,6 +154,7 @@ export class GameField {
         for (let index = 210; index >= 1; index -= 11) {
             if (this.checkIfRowFull(index)) {
                 this.deoccupyRow(index);
+                this.score += 100;
                 this.moveAllOccupiedDown(index);
             }
         }

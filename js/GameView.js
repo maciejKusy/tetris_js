@@ -18,7 +18,7 @@ export class GameView {
      */
     derenderShape = shape => {
         for (const index of shape) {
-            this.tiles.get(index).avatar.classList.remove("main-container--red");
+            this.tiles.get(index).avatar.classList.remove("main-container__tile--occupied");
         }
     }
 
@@ -28,7 +28,7 @@ export class GameView {
      */
     renderCurrentShape = shape => {
         for (const index of shape) {
-            this.tiles.get(index).avatar.classList.add("main-container--red");
+            this.tiles.get(index).avatar.classList.add("main-container__tile--occupied");
         }
     }
 
@@ -37,7 +37,7 @@ export class GameView {
      */
     derenderOccupiedTiles = () => {
         this.tiles.forEach(function(tile) {
-            if (tile.occupied) {tile.avatar.classList.remove("main-container--red");}
+            if (tile.occupied) {tile.avatar.classList.remove("main-container__tile--occupied");}
         })
     }
 
@@ -47,12 +47,36 @@ export class GameView {
      */
     renderOccupiedTiles = () => {
         this.tiles.forEach(function(tile) {
-            if (tile.occupied) {tile.avatar.classList.add("main-container--red")}
+            if (tile.occupied) {tile.avatar.classList.add("main-container__tile--occupied")}
         })
     }
 
+    /**
+     * Renders the next shape in the queue - TO BE CHANGED;
+     * @param {Array} shape - the coordinates of the next shape in the queue in the GameField;
+     */
     renderNextShape = shape => {
-        const display = document.getElementById('next-shape-display');
-        display.textContent = shape.name;
+        const nextShapeDisplay = document.getElementById('next-shape-display');
+        nextShapeDisplay.textContent = shape.name;
+    }
+
+    renderScore = score => {
+        const scoreDisplay = document.getElementById('score-display');
+        scoreDisplay.textContent = score;
+    }
+
+    renderGameOverOverlay = () => {
+        const overlay = document.getElementById('gameover');
+        overlay.classList.remove('gameover-overlay--closed');
+    }
+
+    derenderGameOverOverlay = () => {
+        const overlay = document.getElementById('gameover');
+        overlay.classList.add('gameover-overlay--closed');
+    }
+
+    renderFinalScore = score => {
+        const display = document.getElementById('final-score');
+        display.textContent = score;
     }
 }
