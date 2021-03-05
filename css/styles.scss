@@ -1,8 +1,14 @@
-$tileBackgroundColor: rgb(158, 158, 158);
+$bodyBackgroundColor: rgb(180, 175, 175);
+$backgroundShadowColor: rgb(23, 31, 21);
+$mainContainerColor: rgb(94, 116, 88);
+$mainContainerBorderColor: rgb(116, 116, 116);
 $gameWonOverlayColor: rgba(39, 39, 39, 0.8);
+$occupiedTilecolor: rgb(50, 61, 48);
+$occupiedTileBorderColor: rgb(63, 80, 65);
 
 body {
     background-size: cover;
+    background-color: $bodyBackgroundColor;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -11,56 +17,56 @@ body {
 }
 
 .main-container {
+    align-items: center;
+    background-color: $mainContainerColor;
+    border: 10px inset $mainContainerBorderColor;
+    border-radius: 8px;
     display: inline-flex;
     flex-direction: column;
-    align-items: center;
-    box-shadow: 5px 5px 14px $tileBackgroundColor;
     margin-top: 1.25rem;
-
-    background-color: $tileBackgroundColor;
 }
 
 .side-container {
+    align-items: center;
+    background-color: $mainContainerColor;
+    border-radius: 8px;
+    box-shadow: 5px 5px 14px $backgroundShadowColor;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    box-shadow: 5px 5px 14px $tileBackgroundColor;
     height: 80vh;
     margin-top: 1.25rem;
     width: 25vw;
-
-    background-color: $tileBackgroundColor;
 }
 
 .main-container__tilerow {
-    display: flex;
     align-items: center;
-    flex-direction: row;
+    display: flex;
 }
 
 .main-container__tile {
-    border: 2px solid $tileBackgroundColor;
-    height: 1.8rem;
-    width: 1.8rem;
+    border: 4px solid $mainContainerColor;
+    height: 1.5rem;
+    width: 1.5rem;
     &--hidden {
         display: none;
     }
     &--occupied {
-        background-color: red;
-        border: 2px outset $tileBackgroundColor;
+        background-color: $occupiedTilecolor;
+        border: 4px outset $occupiedTileBorderColor;
+        border-radius: 5px;
     }
 }
 
 .gameover-overlay {
+    align-items: center;
+    background-color: $gameWonOverlayColor;
     display: flex;
     height: 100vh;
-    width: 100vw;
-    background-color: $gameWonOverlayColor;
+    justify-content: center;
+    left: 0;
     position: fixed;
     top: 0;
-    left: 0;
-    align-items: center;
-    justify-content: center;
+    width: 100vw;
     &--closed {
         display: none;
     }
