@@ -77,9 +77,11 @@ export class Controller {
         }
     }
 
-    handleNewGameButtonClicked = () => {
-        this.view.derenderGameOverOverlay();
-        this.model = new GameField();
-        this.setUpNewGame();
+    handleNewGameButtonClicked = clickEvent => {
+        if (clickEvent.target.id === "newgame-button") {
+            this.view.derenderGameOverOverlay();
+            this.model = new GameField();
+            this.setUpNewGame();
+        }
     }
 }
