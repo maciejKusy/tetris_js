@@ -24,28 +24,36 @@ export class Controller {
         document.addEventListener("keydown", this.handleArrowPress);
     }
 
+    removeSingleRow = () => {
+        this.view.derenderOccupiedTiles();
+        this.model.removeFullRows();
+        this.view.renderScore(this.model.score);
+        this.view.renderOccupiedTiles();
+    }
+
+    gameOver = () => {
+        this.view.derenderOccupiedTiles();
+        document.removeEventListener("keydown", this.handleArrowPress);
+        clearInterval(this.fallingInterval);
+        this.view.renderFinalScore(this.model.score);
+        this.view.renderGameOverOverlay();
+    }
+
     /**
      * Encompasses everything that happens and all checks that need to be performed when a shape 
      * moves one tile down;
      */
     shapeFallDown = () => {
-        if (this.model.checkDownMove()) {
+        if (this.model.canMoveDown()) {
             this.view.derenderShape(this.model.tilesActive);
             this.model.moveCurrentShapeDown();
         } else {
             while (this.model.checkForAnyFullRows()) {
-                this.view.derenderOccupiedTiles();
-                this.model.removeFullRows();
-                this.view.renderScore(this.model.score);
-                this.view.renderOccupiedTiles();
+                this.removeSingleRow();
             }
             if (this.model.checkIfGameOver()) {
-                this.view.derenderOccupiedTiles();
-                document.removeEventListener("keydown", this.handleArrowPress);
-                clearInterval(this.fallingInterval);
-                this.view.renderFinalScore(this.model.score);
-                this.view.renderGameOverOverlay();
-                return
+                this.gameOver();
+                return;
             }
             this.model.setUpNewShape();
             this.view.renderNextShape(this.model.nextShape);

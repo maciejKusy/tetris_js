@@ -1,3 +1,5 @@
+const occupiedTileClass = "main-container__tile--occupied";
+
 export class GameView {
     constructor() {
         this.tiles = null;
@@ -18,7 +20,7 @@ export class GameView {
      */
     derenderShape = shape => {
         for (const index of shape) {
-            this.tiles.get(index).avatar.classList.remove("main-container__tile--occupied");
+            this.tiles.get(index).avatar.classList.remove(occupiedTileClass);
         }
     }
 
@@ -28,7 +30,7 @@ export class GameView {
      */
     renderCurrentShape = shape => {
         for (const index of shape) {
-            this.tiles.get(index).avatar.classList.add("main-container__tile--occupied");
+            this.tiles.get(index).avatar.classList.add(occupiedTileClass);
         }
     }
 
@@ -37,7 +39,7 @@ export class GameView {
      */
     derenderOccupiedTiles = () => {
         this.tiles.forEach(function(tile) {
-            if (tile.occupied) {tile.avatar.classList.remove("main-container__tile--occupied");}
+            if (tile.occupied) {tile.avatar.classList.remove(occupiedTileClass);}
         })
     }
 
@@ -47,7 +49,7 @@ export class GameView {
      */
     renderOccupiedTiles = () => {
         this.tiles.forEach(function(tile) {
-            if (tile.occupied) {tile.avatar.classList.add("main-container__tile--occupied")}
+            if (tile.occupied) {tile.avatar.classList.add(occupiedTileClass)}
         })
     }
 

@@ -1,9 +1,10 @@
-import {Shapes, Angles} from './constants.js';
+import {Shapes, Rotations} from './constants.js';
 import {Tile} from './Tile.js';
 
 export class GameField {
     constructor() {
         this.tiles = new Map();
+        this.numberOfTiles = 220;
         this.createTileMap();
         this.nextShape = this.getRandomShape();
         this.tilesActive = null;
@@ -26,7 +27,7 @@ export class GameField {
      * DOM elements to those tiles;
      */
     createTileMap = () => {
-        for (let tileNumber = 1; tileNumber <= 220; tileNumber++) {
+        for (let tileNumber = 1; tileNumber <= this.numberOfTiles; tileNumber++) {
             this.tiles.set(tileNumber, new Tile(document.getElementById(tileNumber.toString())));
         }
     }
@@ -43,7 +44,7 @@ export class GameField {
      */
     setUpNewShape = () => {
         this.currentShape = this.nextShape;
-        this.currentShape.rotationState = Angles.DEFAULT;
+        this.currentShape.rotationState = Rotations.DEFAULT;
         this.tilesActive = this.currentShape.coordinates;
         this.activateTiles(this.currentShape.coordinates);
         this.nextShape = this.getRandomShape();
@@ -54,7 +55,7 @@ export class GameField {
      */
     getRandomShape = () => {
         const shapes = this.getShapes();
-        let index = Math.floor(Math.random() * 5);
+        let index = Math.floor(Math.random() * shapes.length);
         let selectedShape = shapes[index];
         return selectedShape;
     }
@@ -62,9 +63,9 @@ export class GameField {
     /**
      * Verifies whether a move further down the field is possible or not;
      */
-    checkDownMove = () => {
+    canMoveDown = () => {
         for (const coordinate of this.tilesActive) {
-            if ((coordinate + 11) > 220 || this.tiles.get(coordinate + 11).occupied && !this.tilesActive.includes(coordinate + 11)) {
+            if ((coordinate + 11) > this.numberOfTiles || this.tiles.get(coordinate + 11).occupied && !this.tilesActive.includes(coordinate + 11)) {
                 return false;
             }
         } return true;
@@ -81,13 +82,19 @@ export class GameField {
         this.activateTiles(this.tilesActive);
     }
 
+    canNotMoveLeft = coordinate => {
+        if (coordinate % 11 === 1 || this.tiles.get(coordinate - 1).occupied && !this.tilesActive.includes(coordinate - 1)) {
+            return true;
+        } return false;
+    }
+
     /**
      * Verifies whether a move further to the left is possible (by using the coordinates of the invisible column)
      * and if so, moves the active shape by adjusting the coordinates of active tiles;
      */
     moveCurrentShapeLeft = () => {
         for (const coordinate of this.tilesActive) {
-            if (coordinate % 11 === 1 || this.tiles.get(coordinate - 1).occupied && !this.tilesActive.includes(coordinate - 1)) {return}
+            if (this.canNotMoveLeft(coordinate)) {return}
         }
 
         let tiles = [];
@@ -97,12 +104,18 @@ export class GameField {
         this.activateTiles(this.tilesActive);
     }
 
+    canNotMoveRight = coordinate => {
+        if (coordinate % 11 === 10 || this.tiles.get(coordinate + 1).occupied  && !this.tilesActive.includes(coordinate + 1)) {
+            return true;
+        } return false;
+    }
+
     /**
      * Same as move left but in the other direction;
      */
     moveCurrentShapeRight = () => {
         for (const coordinate of this.tilesActive) {
-            if (coordinate % 11 === 10 || this.tiles.get(coordinate + 1).occupied  && !this.tilesActive.includes(coordinate + 1)) {return}
+            if (this.canNotMoveRight(coordinate)) {return}
         }
 
         let tiles = [];
@@ -182,7 +195,7 @@ export class GameField {
         for (let index = (borderIndex - 2); index >= 1; index--) {
             if (this.tiles.get(index).occupied) {
                 this.tiles.get(index).occupied = false;
-                if (index + 11 < 220) {
+                if (index + 11 < this.numberOfTiles) {
                     this.tiles.get(index + 11).occupied = true;
                 }
             }
@@ -206,9 +219,9 @@ export class GameField {
      * Checks whether it is possible to rotate the current shape ie. by using the invisible 11th column;
      * @param {Array} coordinates - the coordinates of the currently active shape;
      */
-    checkRotationAvailability = (coordinates) => {
+    checkRotationAvailability = coordinates => {
         for (const coordinate of coordinates) {
-            if (coordinate % 11 === 0 || coordinate > 220 || coordinate < 1 || this.tiles.get(coordinate).occupied && !this.tilesActive.includes(coordinate)) {
+            if (coordinate % 11 === 0 || coordinate > this.numberOfTiles || coordinate < 1 || this.tiles.get(coordinate).occupied && !this.tilesActive.includes(coordinate)) {
                 return false;
             }
         } return true;
@@ -240,46 +253,46 @@ export class GameField {
         let tileThree = activeTiles[3];
 
         switch (this.currentShape.rotationState) {
-            case Angles.DEFAULT:
+            case Rotations.DEFAULT:
                 if (this.checkRotationAvailability([tileOne + 12, tileTwo - 10, tileThree + 10])) {
                     this.deactivateTiles(this.tilesActive);
                     activeTiles[0] += 12;
                     activeTiles[1] -= 10;
                     activeTiles[3] += 10;
-                    this.currentShape.rotationState = Angles.ONEROTATION;
+                    this.currentShape.rotationState = Rotations.ONEROTATION;
                     this.activateTiles(this.tilesActive);
-                    break
-                } else {break;}
-            case Angles.ONEROTATION:
+                    break;
+                } break;
+            case Rotations.ONEROTATION:
                 if (this.checkRotationAvailability([tileOne + 10, tileTwo + 12, tileThree - 12])) {
                     this.deactivateTiles(this.tilesActive);
                     activeTiles[0] += 10;
                     activeTiles[1] += 12;
                     activeTiles[3] -= 12;
-                    this.currentShape.rotationState = Angles.TWOROTATIONS;
+                    this.currentShape.rotationState = Rotations.TWOROTATIONS;
                     this.activateTiles(this.tilesActive);
-                    break
-                } else {break;}
-            case Angles.TWOROTATIONS:
+                    break;
+                } break;
+            case Rotations.TWOROTATIONS:
                 if (this.checkRotationAvailability([tileOne - 12, tileTwo + 10, tileThree - 10])) {
                     this.deactivateTiles(this.tilesActive);
                     activeTiles[0] -= 12;
                     activeTiles[1] += 10;
                     activeTiles[3] -= 10;
-                    this.currentShape.rotationState = Angles.THREEROTATIONS;
+                    this.currentShape.rotationState = Rotations.THREEROTATIONS;
                     this.activateTiles(this.tilesActive);
-                    break
-                } else {break;}
-            case Angles.THREEROTATIONS:
+                    break;
+                } break;
+            case Rotations.THREEROTATIONS:
                 if (this.checkRotationAvailability([tileOne - 10, tileTwo - 12, tileThree + 12])) {
                     this.deactivateTiles(this.tilesActive);
                     activeTiles[0] -= 10;
                     activeTiles[1] -= 12;
                     activeTiles[3] += 12;
-                    this.currentShape.rotationState = Angles.DEFAULT;
+                    this.currentShape.rotationState = Rotations.DEFAULT;
                     this.activateTiles(this.tilesActive);
-                    break
-                } else {break;}
+                    break;
+                } break;
         }
     }
 
@@ -290,26 +303,26 @@ export class GameField {
         let tileThree = activeTiles[3];
 
         switch (this.currentShape.rotationState) {
-            case Angles.DEFAULT:
+            case Rotations.DEFAULT:
                 if (this.checkRotationAvailability([tileOne - 10, tileTwo + 10, tileThree + 20])) {
                     this.deactivateTiles(this.tilesActive);
                     activeTiles[0] -= 10;
                     activeTiles[2] += 10;
                     activeTiles[3] += 20;
-                    this.currentShape.rotationState = Angles.ONEROTATION;
+                    this.currentShape.rotationState = Rotations.ONEROTATION;
                     this.activateTiles(this.tilesActive);
-                    break
-                } else {break;}
-            case Angles.ONEROTATION:
+                    break;
+                } break;
+            case Rotations.ONEROTATION:
                 if (this.checkRotationAvailability([tileOne + 10, tileTwo - 10, tileThree - 20])) {
                     this.deactivateTiles(this.tilesActive);
                     activeTiles[0] += 10;
                     activeTiles[2] -= 10;
                     activeTiles[3] -= 20;
-                    this.currentShape.rotationState = Angles.DEFAULT;
+                    this.currentShape.rotationState = Rotations.DEFAULT;
                     this.activateTiles(this.tilesActive);
-                    break
-                } else {break;}
+                    break;
+                } break;
         }
     }
 
@@ -320,26 +333,26 @@ export class GameField {
         let tileThree = activeTiles[3];
 
         switch (this.currentShape.rotationState) {
-            case Angles.DEFAULT:
+            case Rotations.DEFAULT:
                 if (this.checkRotationAvailability([tileOne - 10, tileTwo - 12, tileThree - 2])) {
                     this.deactivateTiles(this.tilesActive);
                     activeTiles[0] -= 10;
                     activeTiles[2] -= 12;
                     activeTiles[3] -= 2;
-                    this.currentShape.rotationState = Angles.ONEROTATION;
+                    this.currentShape.rotationState = Rotations.ONEROTATION;
                     this.activateTiles(this.tilesActive);
-                    break
-                } else {break;}
-            case Angles.ONEROTATION:
+                    break;
+                } break;
+            case Rotations.ONEROTATION:
                 if (this.checkRotationAvailability([tileOne + 10, tileTwo + 12, tileThree + 2])) {
                     this.deactivateTiles(this.tilesActive);
                     activeTiles[0] += 10;
                     activeTiles[2] += 12;
                     activeTiles[3] += 2;
-                    this.currentShape.rotationState = Angles.DEFAULT;
+                    this.currentShape.rotationState = Rotations.DEFAULT;
                     this.activateTiles(this.tilesActive);
-                    break
-                } else {break;}
+                    break;
+                } break;
         }
     }
 
@@ -350,46 +363,46 @@ export class GameField {
         let tileThree = activeTiles[3];
 
         switch (this.currentShape.rotationState) {
-            case Angles.DEFAULT:
+            case Rotations.DEFAULT:
                 if (this.checkRotationAvailability([tileOne + 2, tileTwo - 10, tileThree + 10])) {
                     this.deactivateTiles(this.tilesActive);
                     activeTiles[0] += 2;
                     activeTiles[1] -= 10;
                     activeTiles[3] += 10;
-                    this.currentShape.rotationState = Angles.ONEROTATION;
+                    this.currentShape.rotationState = Rotations.ONEROTATION;
                     this.activateTiles(this.tilesActive);
-                    break
-                } else {break;}
-            case Angles.ONEROTATION:
+                    break;
+                } break;
+            case Rotations.ONEROTATION:
                 if (this.checkRotationAvailability([tileOne + 22, tileTwo + 12, tileThree - 12])) {
                     this.deactivateTiles(this.tilesActive);
                     activeTiles[0] += 22;
                     activeTiles[1] += 12;
                     activeTiles[3] -= 12;
-                    this.currentShape.rotationState = Angles.TWOROTATIONS;
+                    this.currentShape.rotationState = Rotations.TWOROTATIONS;
                     this.activateTiles(this.tilesActive);
-                    break
-                } else {break;}
-            case Angles.TWOROTATIONS:
+                    break;
+                } break;
+            case Rotations.TWOROTATIONS:
                 if (this.checkRotationAvailability([tileOne - 2, tileTwo + 10, tileThree - 10])) {
                     this.deactivateTiles(this.tilesActive);
                     activeTiles[0] -= 2;
                     activeTiles[1] += 10;
                     activeTiles[3] -= 10;
-                    this.currentShape.rotationState = Angles.THREEROTATIONS;
+                    this.currentShape.rotationState = Rotations.THREEROTATIONS;
                     this.activateTiles(this.tilesActive);
-                    break
-                } else {break;}
-            case Angles.THREEROTATIONS:
+                    break;
+                } break;
+            case Rotations.THREEROTATIONS:
                 if (this.checkRotationAvailability([tileOne - 22, tileTwo - 12, tileThree + 12])) {
                     this.deactivateTiles(this.tilesActive);
                     activeTiles[0] -= 22;
                     activeTiles[1] -= 12;
                     activeTiles[3] += 12;
-                    this.currentShape.rotationState = Angles.DEFAULT;
+                    this.currentShape.rotationState = Rotations.DEFAULT;
                     this.activateTiles(this.tilesActive);
-                    break
-                } else {break;}
+                    break;
+                } break;
         }
     }
 }

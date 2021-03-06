@@ -1,4 +1,4 @@
-export const Angles = {
+export const Rotations = {
     DEFAULT: "DEFAULT",
     ONEROTATION: "ONEROTATION",
     TWOROTATIONS: "TWOROTATIONS",
