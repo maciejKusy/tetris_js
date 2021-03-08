@@ -1,4 +1,4 @@
-const occupiedTileClass = "main-container__tile--occupied";
+import {occupiedTileClass} from './constants.js';
 
 export class GameView {
     constructor() {

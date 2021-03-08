@@ -1,5 +1,6 @@
 import {Shapes, Rotations} from './constants.js';
 import {Tile} from './Tile.js';
+import {Shape, Triangle, Square, Bar, Step, El} from './Shape.js';
 
 export class GameField {
     constructor() {
@@ -36,7 +37,29 @@ export class GameField {
      * Returns all the available shapes (starting coordinates);
      */
     getShapes = () => {
-        return [Shapes.TRIANGLE, Shapes.SQUARE, Shapes.BAR, Shapes.STEP, Shapes.EL];
+        return Object.keys(Shapes);
+    }
+
+    /**
+     * Randomly selects a shape (a set of astarting coordinates) from the available pool;
+     */
+     getRandomShape = () => {
+        const shapes = this.getShapes();
+        let index = Math.floor(Math.random() * shapes.length);
+        let selectedShape = shapes[index];
+        
+        switch(selectedShape) {
+            case "TRIANGLE":
+                return new Triangle();
+            case "SQUARE": 
+                return new Square();
+            case "BAR":
+                return new Bar();
+            case "STEP":
+                return new Step();
+            case "EL":
+                return new El();
+        }
     }
 
     /**
@@ -44,20 +67,9 @@ export class GameField {
      */
     setUpNewShape = () => {
         this.currentShape = this.nextShape;
-        this.currentShape.rotationState = Rotations.DEFAULT;
         this.tilesActive = this.currentShape.coordinates;
-        this.activateTiles(this.currentShape.coordinates);
+        this.currentShape.activateTiles(this.currentShape.coordinates, this.tiles);
         this.nextShape = this.getRandomShape();
-    }
-
-    /**
-     * Randomly selects a shape (a set of astarting coordinates) from the available pool;
-     */
-    getRandomShape = () => {
-        const shapes = this.getShapes();
-        let index = Math.floor(Math.random() * shapes.length);
-        let selectedShape = shapes[index];
-        return selectedShape;
     }
 
     /**
@@ -76,10 +88,10 @@ export class GameField {
      */
     moveCurrentShapeDown = () => {
         let tiles = [];
-        this.deactivateTiles(this.tilesActive);
+        this.currentShape.deactivateTiles(this.tilesActive, this.tiles);
         this.tilesActive.forEach(function(tile) {tile = tile + 11; tiles.push(tile)});
         this.tilesActive = tiles;
-        this.activateTiles(this.tilesActive);
+        this.currentShape.activateTiles(this.tilesActive, this.tiles);
     }
 
     canNotMoveLeft = coordinate => {
@@ -98,10 +110,10 @@ export class GameField {
         }
 
         let tiles = [];
-        this.deactivateTiles(this.tilesActive);
+        this.currentShape.deactivateTiles(this.tilesActive, this.tiles);
         this.tilesActive.forEach(function(tile) {tile = tile - 1; tiles.push(tile)});
         this.tilesActive = tiles;
-        this.activateTiles(this.tilesActive);
+        this.currentShape.activateTiles(this.tilesActive, this.tiles);
     }
 
     canNotMoveRight = coordinate => {
@@ -119,33 +131,10 @@ export class GameField {
         }
 
         let tiles = [];
-        this.deactivateTiles(this.tilesActive);
+        this.currentShape.deactivateTiles(this.tilesActive, this.tiles);
         this.tilesActive.forEach(function(tile) {tile = tile + 1; tiles.push(tile)});
         this.tilesActive = tiles;
-        this.activateTiles(this.tilesActive);
-    }
-
-    /**
-     * Deactivates the currently active tiles so their coordinates can be adjusted;
-     * @param {Array} coordinates - the coordinates of the current active tiles (so the currently active shape);
-     */
-    deactivateTiles = coordinates => {
-        for (const coordinate of coordinates) {
-            this.tiles.get(coordinate).occupied = false;
-            this.tiles.get(coordinate).active = false;
-        }
-    }
-
-    /**
-     * Activates the current shape coordinates;
-     * @param {Array} coordinates - the coordinates of the current active tiles (so the currently active shape);
-     */
-    activateTiles = coordinates => {
-        for (const coordinate of coordinates) {
-            let selectedTile = this.tiles.get(coordinate)
-            selectedTile.occupied = true;
-            selectedTile.active = true;
-        }
+        this.currentShape.activateTiles(this.tilesActive, this.tiles);
     }
 
     /**
@@ -216,193 +205,9 @@ export class GameField {
     }
 
     /**
-     * Checks whether it is possible to rotate the current shape ie. by using the invisible 11th column;
-     * @param {Array} coordinates - the coordinates of the currently active shape;
-     */
-    checkRotationAvailability = coordinates => {
-        for (const coordinate of coordinates) {
-            if (coordinate % 11 === 0 || coordinate > this.numberOfTiles || coordinate < 1 || this.tiles.get(coordinate).occupied && !this.tilesActive.includes(coordinate)) {
-                return false;
-            }
-        } return true;
-    }
-
-    /**
      * Depending on the name of the current shape runs the reelevant rotation method adjusting the shape opsition;
      */
     rotateCurrentShape = () => {
-        switch (this.currentShape.name) {
-            case "TRIANGLE":
-                this.rotateTriangle();
-                break
-            case "BAR":
-                this.rotateBar();
-                break
-            case "STEP":
-                this.rotateStep();
-                break
-            case "EL":
-                this.rotateEl();
-        }
-    }
-
-    rotateTriangle = () => {
-        let activeTiles = this.tilesActive;
-        let tileOne = activeTiles[0];
-        let tileTwo = activeTiles[1];
-        let tileThree = activeTiles[3];
-
-        switch (this.currentShape.rotationState) {
-            case Rotations.DEFAULT:
-                if (this.checkRotationAvailability([tileOne + 12, tileTwo - 10, tileThree + 10])) {
-                    this.deactivateTiles(this.tilesActive);
-                    activeTiles[0] += 12;
-                    activeTiles[1] -= 10;
-                    activeTiles[3] += 10;
-                    this.currentShape.rotationState = Rotations.ONEROTATION;
-                    this.activateTiles(this.tilesActive);
-                    break;
-                } break;
-            case Rotations.ONEROTATION:
-                if (this.checkRotationAvailability([tileOne + 10, tileTwo + 12, tileThree - 12])) {
-                    this.deactivateTiles(this.tilesActive);
-                    activeTiles[0] += 10;
-                    activeTiles[1] += 12;
-                    activeTiles[3] -= 12;
-                    this.currentShape.rotationState = Rotations.TWOROTATIONS;
-                    this.activateTiles(this.tilesActive);
-                    break;
-                } break;
-            case Rotations.TWOROTATIONS:
-                if (this.checkRotationAvailability([tileOne - 12, tileTwo + 10, tileThree - 10])) {
-                    this.deactivateTiles(this.tilesActive);
-                    activeTiles[0] -= 12;
-                    activeTiles[1] += 10;
-                    activeTiles[3] -= 10;
-                    this.currentShape.rotationState = Rotations.THREEROTATIONS;
-                    this.activateTiles(this.tilesActive);
-                    break;
-                } break;
-            case Rotations.THREEROTATIONS:
-                if (this.checkRotationAvailability([tileOne - 10, tileTwo - 12, tileThree + 12])) {
-                    this.deactivateTiles(this.tilesActive);
-                    activeTiles[0] -= 10;
-                    activeTiles[1] -= 12;
-                    activeTiles[3] += 12;
-                    this.currentShape.rotationState = Rotations.DEFAULT;
-                    this.activateTiles(this.tilesActive);
-                    break;
-                } break;
-        }
-    }
-
-    rotateBar = () => {
-        let activeTiles = this.tilesActive;
-        let tileOne = activeTiles[0];
-        let tileTwo = activeTiles[2];
-        let tileThree = activeTiles[3];
-
-        switch (this.currentShape.rotationState) {
-            case Rotations.DEFAULT:
-                if (this.checkRotationAvailability([tileOne - 10, tileTwo + 10, tileThree + 20])) {
-                    this.deactivateTiles(this.tilesActive);
-                    activeTiles[0] -= 10;
-                    activeTiles[2] += 10;
-                    activeTiles[3] += 20;
-                    this.currentShape.rotationState = Rotations.ONEROTATION;
-                    this.activateTiles(this.tilesActive);
-                    break;
-                } break;
-            case Rotations.ONEROTATION:
-                if (this.checkRotationAvailability([tileOne + 10, tileTwo - 10, tileThree - 20])) {
-                    this.deactivateTiles(this.tilesActive);
-                    activeTiles[0] += 10;
-                    activeTiles[2] -= 10;
-                    activeTiles[3] -= 20;
-                    this.currentShape.rotationState = Rotations.DEFAULT;
-                    this.activateTiles(this.tilesActive);
-                    break;
-                } break;
-        }
-    }
-
-    rotateStep = () => {
-        let activeTiles = this.tilesActive;
-        let tileOne = activeTiles[0];
-        let tileTwo = activeTiles[2];
-        let tileThree = activeTiles[3];
-
-        switch (this.currentShape.rotationState) {
-            case Rotations.DEFAULT:
-                if (this.checkRotationAvailability([tileOne - 10, tileTwo - 12, tileThree - 2])) {
-                    this.deactivateTiles(this.tilesActive);
-                    activeTiles[0] -= 10;
-                    activeTiles[2] -= 12;
-                    activeTiles[3] -= 2;
-                    this.currentShape.rotationState = Rotations.ONEROTATION;
-                    this.activateTiles(this.tilesActive);
-                    break;
-                } break;
-            case Rotations.ONEROTATION:
-                if (this.checkRotationAvailability([tileOne + 10, tileTwo + 12, tileThree + 2])) {
-                    this.deactivateTiles(this.tilesActive);
-                    activeTiles[0] += 10;
-                    activeTiles[2] += 12;
-                    activeTiles[3] += 2;
-                    this.currentShape.rotationState = Rotations.DEFAULT;
-                    this.activateTiles(this.tilesActive);
-                    break;
-                } break;
-        }
-    }
-
-    rotateEl = () => {
-        let activeTiles = this.tilesActive;
-        let tileOne = activeTiles[0];
-        let tileTwo = activeTiles[1];
-        let tileThree = activeTiles[3];
-
-        switch (this.currentShape.rotationState) {
-            case Rotations.DEFAULT:
-                if (this.checkRotationAvailability([tileOne + 2, tileTwo - 10, tileThree + 10])) {
-                    this.deactivateTiles(this.tilesActive);
-                    activeTiles[0] += 2;
-                    activeTiles[1] -= 10;
-                    activeTiles[3] += 10;
-                    this.currentShape.rotationState = Rotations.ONEROTATION;
-                    this.activateTiles(this.tilesActive);
-                    break;
-                } break;
-            case Rotations.ONEROTATION:
-                if (this.checkRotationAvailability([tileOne + 22, tileTwo + 12, tileThree - 12])) {
-                    this.deactivateTiles(this.tilesActive);
-                    activeTiles[0] += 22;
-                    activeTiles[1] += 12;
-                    activeTiles[3] -= 12;
-                    this.currentShape.rotationState = Rotations.TWOROTATIONS;
-                    this.activateTiles(this.tilesActive);
-                    break;
-                } break;
-            case Rotations.TWOROTATIONS:
-                if (this.checkRotationAvailability([tileOne - 2, tileTwo + 10, tileThree - 10])) {
-                    this.deactivateTiles(this.tilesActive);
-                    activeTiles[0] -= 2;
-                    activeTiles[1] += 10;
-                    activeTiles[3] -= 10;
-                    this.currentShape.rotationState = Rotations.THREEROTATIONS;
-                    this.activateTiles(this.tilesActive);
-                    break;
-                } break;
-            case Rotations.THREEROTATIONS:
-                if (this.checkRotationAvailability([tileOne - 22, tileTwo - 12, tileThree + 12])) {
-                    this.deactivateTiles(this.tilesActive);
-                    activeTiles[0] -= 22;
-                    activeTiles[1] -= 12;
-                    activeTiles[3] += 12;
-                    this.currentShape.rotationState = Rotations.DEFAULT;
-                    this.activateTiles(this.tilesActive);
-                    break;
-                } break;
-        }
+        this.currentShape.rotate(this.numberOfTiles, this.tiles, this.tilesActive);
     }
 }
