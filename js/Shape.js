@@ -234,7 +234,7 @@ export class El extends Shape {
                 } break;
             case Rotations.THREEROTATIONS:
                 if (this.checkRotationAvailability([tileOne - 22, tileTwo - 12, tileThree + 12], numberOfTiles, tileMap, activeTiles)) {
-                    this.deactivateTiles(lactiveTiles, tileMap);
+                    this.deactivateTiles(activeTiles, tileMap);
                     activeTiles[0] -= 22;
                     activeTiles[1] -= 12;
                     activeTiles[3] += 12;

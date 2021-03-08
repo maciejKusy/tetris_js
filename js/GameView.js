@@ -3,6 +3,7 @@ import {occupiedTileClass} from './constants.js';
 export class GameView {
     constructor() {
         this.tiles = null;
+        this.newGameButton = document.getElementById('newgame-button');
     }
 
     /**

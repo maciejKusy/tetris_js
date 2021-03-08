@@ -6,9 +6,8 @@ export class Controller {
         this.view = view; 
         this.view.tiles = this.model.tiles;
         this.view.derenderRightBorder();
-        this.setUpNewGame();
-        this.newGameButton = document.getElementById('newgame-button');
-        document.addEventListener("click", this.handleNewGameButtonClicked);
+        this.setUpNewGame();        
+        this.view.newGameButton.addEventListener("click", this.handleNewGameButtonClicked);
     }
 
     /**
