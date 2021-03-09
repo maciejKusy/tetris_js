@@ -1,14 +1,25 @@
+@font-face {
+    font-family: "Main";
+    src: url("../fonts/Minercraftory.ttf");
+}
+
 $bodyBackgroundColor: rgb(180, 175, 175);
+$bodyBackgroundImage: url("../img/background.png");
 $backgroundShadowColor: rgb(23, 31, 21);
 $mainContainerColor: rgb(94, 116, 88);
 $mainContainerBorderColor: rgb(116, 116, 116);
 $gameWonOverlayColor: rgba(39, 39, 39, 0.8);
 $occupiedTilecolor: rgb(50, 61, 48);
 $occupiedTileBorderColor: rgb(63, 80, 65);
+$mainFont: "Main";
+$mainFontColor: rgb(178, 176, 202);
+$mainFontShadowColor: rgb(0, 0, 0);
 
 body {
     background-size: cover;
     background-color: $bodyBackgroundColor;
+    background-image: $bodyBackgroundImage;
+    background-size: contain;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -31,8 +42,11 @@ body {
     background-color: $mainContainerColor;
     border-radius: 8px;
     box-shadow: 5px 5px 14px $backgroundShadowColor;
+    color: $mainFontColor;
     display: flex;
     flex-direction: column;
+    font-family: $mainFont;
+    font-size: 2rem;
     height: 80vh;
     margin-top: 1.25rem;
     width: 25vw;
@@ -81,7 +95,10 @@ body {
     justify-content: space-around;
     padding-top: 1rem;
     span {
-        color: black;
+        color: $mainFontColor;
+        font-family: $mainFont;
+        font-size: 2rem;
+        text-shadow: 3px 3px 5px $mainFontShadowColor;
     }
     button {
         display: block;

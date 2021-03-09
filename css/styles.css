@@ -1,6 +1,13 @@
+@font-face {
+  font-family: "Main";
+  src: url("../fonts/Minercraftory.ttf");
+}
+
 body {
   background-size: cover;
   background-color: #b4afaf;
+  background-image: url("../img/background.png");
+  background-size: contain;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -39,6 +46,7 @@ body {
   border-radius: 8px;
   -webkit-box-shadow: 5px 5px 14px #171f15;
           box-shadow: 5px 5px 14px #171f15;
+  color: #b2b0ca;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -46,6 +54,8 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  font-family: "Main";
+  font-size: 2rem;
   height: 80vh;
   margin-top: 1.25rem;
   width: 25vw;
@@ -117,7 +127,10 @@ body {
 }
 
 .gameover-popup span {
-  color: black;
+  color: #b2b0ca;
+  font-family: "Main";
+  font-size: 2rem;
+  text-shadow: 3px 3px 5px black;
 }
 
 .gameover-popup button {
