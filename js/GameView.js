@@ -1,4 +1,4 @@
-import {occupiedTileClass} from './constants.js';
+import {OCCUPIED_TILE_CLASS, INVISIBLE_COLUMN_INDEX, NUMBER_OF_TILES} from './constants.js';
 
 export class GameView {
     constructor() {
@@ -10,7 +10,7 @@ export class GameView {
      * De-renders the 'hidden' 11th column of tiles - used for logic but not appropriate for displaying;
      */
     derenderRightBorder = () => {
-        for (let coordinate = 11; coordinate <= 220; coordinate += 11) {
+        for (let coordinate = INVISIBLE_COLUMN_INDEX; coordinate <= NUMBER_OF_TILES; coordinate += INVISIBLE_COLUMN_INDEX) {
             this.tiles.get(coordinate).avatar.classList.add("main-container__tile--hidden");
         }
     }
@@ -21,7 +21,7 @@ export class GameView {
      */
     derenderShape = shape => {
         for (const index of shape) {
-            this.tiles.get(index).avatar.classList.remove(occupiedTileClass);
+            this.tiles.get(index).avatar.classList.remove(OCCUPIED_TILE_CLASS);
         }
     }
 
@@ -31,7 +31,7 @@ export class GameView {
      */
     renderCurrentShape = shape => {
         for (const index of shape) {
-            this.tiles.get(index).avatar.classList.add(occupiedTileClass);
+            this.tiles.get(index).avatar.classList.add(OCCUPIED_TILE_CLASS);
         }
     }
 
@@ -40,7 +40,7 @@ export class GameView {
      */
     derenderOccupiedTiles = () => {
         this.tiles.forEach(function(tile) {
-            if (tile.occupied) {tile.avatar.classList.remove(occupiedTileClass);}
+            if (tile.occupied) {tile.avatar.classList.remove(OCCUPIED_TILE_CLASS);}
         })
     }
 
@@ -50,7 +50,7 @@ export class GameView {
      */
     renderOccupiedTiles = () => {
         this.tiles.forEach(function(tile) {
-            if (tile.occupied) {tile.avatar.classList.add(occupiedTileClass)}
+            if (tile.occupied) {tile.avatar.classList.add(OCCUPIED_TILE_CLASS)}
         })
     }
 

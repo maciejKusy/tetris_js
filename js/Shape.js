@@ -1,4 +1,4 @@
-import {Rotations, Shapes} from './constants.js';
+import {Rotations, Shapes, INVISIBLE_COLUMN_INDEX} from './constants.js';
 
 export class Shape {
     constructor() {
@@ -11,7 +11,7 @@ export class Shape {
      */
      checkRotationAvailability = (coordinates, numberOfTiles, tileMap, tilesActive) => {
         for (const coordinate of coordinates) {
-            if (coordinate % 11 === 0 || coordinate > numberOfTiles || coordinate < 1 || tileMap.get(coordinate).occupied && !tilesActive.includes(coordinate)) {
+            if (coordinate % INVISIBLE_COLUMN_INDEX === 0 || coordinate > numberOfTiles || coordinate < 1 || tileMap.get(coordinate).occupied && !tilesActive.includes(coordinate)) {
                 return false;
             }
         } return true;

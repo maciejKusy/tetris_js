@@ -1,15 +1,14 @@
-import {Shapes, Rotations} from './constants.js';
+import {Shapes, NUMBER_OF_TILES, DEFAULT_TIME_BETWEEN_FALLS, INVISIBLE_COLUMN_INDEX, RIGHT_BORDER_INDEX, SINGLE_ROW_SCORE} from './constants.js';
 import {Tile} from './Tile.js';
-import {Shape, Triangle, Square, Bar, Step, El} from './Shape.js';
+import {Triangle, Square, Bar, Step, El} from './Shape.js';
 
 export class GameField {
     constructor() {
         this.tiles = new Map();
-        this.numberOfTiles = 220;
+        this.numberOfTiles = NUMBER_OF_TILES;
         this.createTileMap();
         this.nextShape = this.getRandomShape();
-        this.tilesActive = null;
-        this.timeBetweenFalls = 1000;
+        this.timeBetweenFalls = DEFAULT_TIME_BETWEEN_FALLS;
         this.score = 0;
         this.setUpNewShape();
     }
@@ -18,7 +17,7 @@ export class GameField {
      * Verifies whether any blocks in the 'first row from the top' are occupied;
      */
     checkIfGameOver = () => {
-        for (let index = 1; index <= 10; index++) {
+        for (let index = 1; index <= RIGHT_BORDER_INDEX; index++) {
             if (this.tiles.get(index).occupied) {return true;}
         } return false;
     }
@@ -67,7 +66,6 @@ export class GameField {
      */
     setUpNewShape = () => {
         this.currentShape = this.nextShape;
-        this.tilesActive = this.currentShape.coordinates;
         this.currentShape.activateTiles(this.currentShape.coordinates, this.tiles);
         this.nextShape = this.getRandomShape();
     }
@@ -76,8 +74,8 @@ export class GameField {
      * Verifies whether a move further down the field is possible or not;
      */
     canMoveDown = () => {
-        for (const coordinate of this.tilesActive) {
-            if ((coordinate + 11) > this.numberOfTiles || this.tiles.get(coordinate + 11).occupied && !this.tilesActive.includes(coordinate + 11)) {
+        for (const coordinate of this.currentShape.coordinates) {
+            if ((coordinate + INVISIBLE_COLUMN_INDEX) > this.numberOfTiles || this.tiles.get(coordinate + INVISIBLE_COLUMN_INDEX).occupied && !this.currentShape.coordinates.includes(coordinate + INVISIBLE_COLUMN_INDEX)) {
                 return false;
             }
         } return true;
@@ -88,14 +86,14 @@ export class GameField {
      */
     moveCurrentShapeDown = () => {
         let tiles = [];
-        this.currentShape.deactivateTiles(this.tilesActive, this.tiles);
-        this.tilesActive.forEach(function(tile) {tile = tile + 11; tiles.push(tile)});
-        this.tilesActive = tiles;
-        this.currentShape.activateTiles(this.tilesActive, this.tiles);
+        this.currentShape.deactivateTiles(this.currentShape.coordinates, this.tiles);
+        this.currentShape.coordinates.forEach(function(tile) {tile = tile + INVISIBLE_COLUMN_INDEX; tiles.push(tile)});
+        this.currentShape.coordinates = tiles;
+        this.currentShape.activateTiles(this.currentShape.coordinates, this.tiles);
     }
 
-    canNotMoveLeft = coordinate => {
-        if (coordinate % 11 === 1 || this.tiles.get(coordinate - 1).occupied && !this.tilesActive.includes(coordinate - 1)) {
+    checkIfBlockedLeft = coordinate => {
+        if (coordinate % INVISIBLE_COLUMN_INDEX === 1 || this.tiles.get(coordinate - 1).occupied && !this.currentShape.coordinates.includes(coordinate - 1)) {
             return true;
         } return false;
     }
@@ -105,19 +103,19 @@ export class GameField {
      * and if so, moves the active shape by adjusting the coordinates of active tiles;
      */
     moveCurrentShapeLeft = () => {
-        for (const coordinate of this.tilesActive) {
-            if (this.canNotMoveLeft(coordinate)) {return}
+        for (const coordinate of this.currentShape.coordinates) {
+            if (this.checkIfBlockedLeft(coordinate)) {return}
         }
 
         let tiles = [];
-        this.currentShape.deactivateTiles(this.tilesActive, this.tiles);
-        this.tilesActive.forEach(function(tile) {tile = tile - 1; tiles.push(tile)});
-        this.tilesActive = tiles;
-        this.currentShape.activateTiles(this.tilesActive, this.tiles);
+        this.currentShape.deactivateTiles(this.currentShape.coordinates, this.tiles);
+        this.currentShape.coordinates.forEach(function(tile) {tile = tile - 1; tiles.push(tile)});
+        this.currentShape.coordinates = tiles;
+        this.currentShape.activateTiles(this.currentShape.coordinates, this.tiles);
     }
 
-    canNotMoveRight = coordinate => {
-        if (coordinate % 11 === 10 || this.tiles.get(coordinate + 1).occupied  && !this.tilesActive.includes(coordinate + 1)) {
+    checkIfBlockedRight = coordinate => {
+        if (coordinate % INVISIBLE_COLUMN_INDEX === RIGHT_BORDER_INDEX || this.tiles.get(coordinate + 1).occupied  && !this.currentShape.coordinates.includes(coordinate + 1)) {
             return true;
         } return false;
     }
@@ -126,15 +124,15 @@ export class GameField {
      * Same as move left but in the other direction;
      */
     moveCurrentShapeRight = () => {
-        for (const coordinate of this.tilesActive) {
-            if (this.canNotMoveRight(coordinate)) {return}
+        for (const coordinate of this.currentShape.coordinates) {
+            if (this.checkIfBlockedRight(coordinate)) {return}
         }
 
         let tiles = [];
-        this.currentShape.deactivateTiles(this.tilesActive, this.tiles);
-        this.tilesActive.forEach(function(tile) {tile = tile + 1; tiles.push(tile)});
-        this.tilesActive = tiles;
-        this.currentShape.activateTiles(this.tilesActive, this.tiles);
+        this.currentShape.deactivateTiles(this.currentShape.coordinates, this.tiles);
+        this.currentShape.coordinates.forEach(function(tile) {tile = tile + 1; tiles.push(tile)});
+        this.currentShape.coordinates = tiles;
+        this.currentShape.activateTiles(this.currentShape.coordinates, this.tiles);
     }
 
     /**
@@ -142,7 +140,7 @@ export class GameField {
      * so that overall checking time is reduced slightly;
      */
     checkForAnyFullRows = () => {
-        for (let index = 210; index >= 1; index -= 11) {
+        for (let index = 210; index >= 1; index -= INVISIBLE_COLUMN_INDEX) {
             if (this.checkIfRowFull(index)) {
                 return true;
             }
@@ -153,10 +151,10 @@ export class GameField {
      * Targets and removes any full rows from the field;
      */
     removeFullRows = () => {
-        for (let index = 210; index >= 1; index -= 11) {
+        for (let index = 210; index >= 1; index -= INVISIBLE_COLUMN_INDEX) {
             if (this.checkIfRowFull(index)) {
                 this.deoccupyRow(index);
-                this.score += 100;
+                this.score += SINGLE_ROW_SCORE;
                 this.moveAllOccupiedDown(index);
             }
         }
@@ -169,7 +167,7 @@ export class GameField {
      */
     checkIfRowFull = startingIndex => {
         let start = startingIndex;
-        let stop = start + 10;
+        let stop = start + RIGHT_BORDER_INDEX;
 
         for (let index = start; index < stop; index++) {
             if (!this.tiles.get(index).occupied) {return false;}
@@ -184,8 +182,8 @@ export class GameField {
         for (let index = (borderIndex - 2); index >= 1; index--) {
             if (this.tiles.get(index).occupied) {
                 this.tiles.get(index).occupied = false;
-                if (index + 11 < this.numberOfTiles) {
-                    this.tiles.get(index + 11).occupied = true;
+                if (index + INVISIBLE_COLUMN_INDEX < this.numberOfTiles) {
+                    this.tiles.get(index + INVISIBLE_COLUMN_INDEX).occupied = true;
                 }
             }
         }
@@ -197,7 +195,7 @@ export class GameField {
      */
     deoccupyRow = startingIndex => {
         let start = startingIndex;
-        let stop = start + 10;
+        let stop = start + RIGHT_BORDER_INDEX;
 
         for (let index = start; index < stop; index++) {
             this.tiles.get(index).occupied = false;
@@ -208,6 +206,6 @@ export class GameField {
      * Depending on the name of the current shape runs the reelevant rotation method adjusting the shape opsition;
      */
     rotateCurrentShape = () => {
-        this.currentShape.rotate(this.numberOfTiles, this.tiles, this.tilesActive);
+        this.currentShape.rotate(this.numberOfTiles, this.tiles, this.currentShape.coordinates);
     }
 }

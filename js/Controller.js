@@ -1,3 +1,4 @@
+import {DOWN_ARROW_KEYCODE, LEFT_ARROW_KEYCODE, RIGHT_ARROW_KEYCODE, UP_ARROW_KEYCODE} from './constants.js';
 import {GameField} from './GameField.js'
 
 export class Controller {
@@ -16,7 +17,7 @@ export class Controller {
      */
     setUpNewGame = () => {
         this.view.tiles = this.model.tiles;
-        this.view.renderCurrentShape(this.model.tilesActive); 
+        this.view.renderCurrentShape(this.model.currentShape.coordinates); 
         this.view.renderNextShape(this.model.nextShape);
         this.view.renderScore(this.model.score);
         this.fallingInterval = setInterval(this.shapeFallDown, this.model.timeBetweenFalls);
@@ -44,7 +45,7 @@ export class Controller {
      */
     shapeFallDown = () => {
         if (this.model.canMoveDown()) {
-            this.view.derenderShape(this.model.tilesActive);
+            this.view.derenderShape(this.model.currentShape.coordinates);
             this.model.moveCurrentShapeDown();
         } else {
             while (this.model.checkForAnyFullRows()) {
@@ -57,7 +58,7 @@ export class Controller {
             this.model.setUpNewShape();
             this.view.renderNextShape(this.model.nextShape);
         }
-        this.view.renderCurrentShape(this.model.tilesActive);
+        this.view.renderCurrentShape(this.model.currentShape.coordinates);
     }
 
     /**
@@ -67,20 +68,20 @@ export class Controller {
     handleArrowPress = keyEvent => {
         let keyPressed = keyEvent.keyCode;
 
-        if (keyPressed === 40) {
+        if (keyPressed === DOWN_ARROW_KEYCODE) {
             this.shapeFallDown();
-        } else if (keyPressed === 37) {
-            this.view.derenderShape(this.model.tilesActive);
+        } else if (keyPressed === LEFT_ARROW_KEYCODE) {
+            this.view.derenderShape(this.model.currentShape.coordinates);
             this.model.moveCurrentShapeLeft();
-            this.view.renderCurrentShape(this.model.tilesActive);
-        } else if (keyPressed === 39) {
-            this.view.derenderShape(this.model.tilesActive);
+            this.view.renderCurrentShape(this.model.currentShape.coordinates);
+        } else if (keyPressed === RIGHT_ARROW_KEYCODE) {
+            this.view.derenderShape(this.model.currentShape.coordinates);
             this.model.moveCurrentShapeRight();
-            this.view.renderCurrentShape(this.model.tilesActive);
-        } else if (keyPressed === 38) {
-            this.view.derenderShape(this.model.tilesActive);
+            this.view.renderCurrentShape(this.model.currentShape.coordinates);
+        } else if (keyPressed === UP_ARROW_KEYCODE) {
+            this.view.derenderShape(this.model.currentShape.coordinates);
             this.model.rotateCurrentShape();
-            this.view.renderCurrentShape(this.model.tilesActive);
+            this.view.renderCurrentShape(this.model.currentShape.coordinates);
         }
     }
 
