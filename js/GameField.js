@@ -114,6 +114,13 @@ export class GameField {
         this.currentShape.activateTiles(this.currentShape.coordinates, this.tiles);
     }
 
+    /**
+     * Verifies whether a block at a particular coordinate is being blocked on the right by checking: 1) if the 
+     * coordinate is perfectly divisible by 10 and so is one of the border, right coordinates; 2) if the next 
+     * coordinate is occupied by a block; 3) the current shape includes the block to the right of the coord.
+     * @param {number} coordinate - a ninteger indicating the number of a tile;
+     * @returns - boolean;
+     */
     checkIfBlockedRight = coordinate => {
         if (coordinate % INVISIBLE_COLUMN_INDEX === RIGHT_BORDER_INDEX || this.tiles.get(coordinate + 1).occupied  && !this.currentShape.coordinates.includes(coordinate + 1)) {
             return true;

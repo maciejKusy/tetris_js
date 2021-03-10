@@ -49,6 +49,13 @@ export class Triangle extends Shape {
         this.name = Shapes.TRIANGLE;
     }
 
+    /**
+     * Rotates the current shape by de-activating the tiles and re-positioning them as if rotating the block
+     * clockwise;
+     * @param {*} numberOfTiles - overall number of tiles on the playing field;
+     * @param {*} tileMap - the model Map of all tile objects;
+     * @param {*} tiles - currently active tiles - indicating where the current shape is located;
+     */
     rotate = (numberOfTiles, tileMap, tiles) => {
         let activeTiles = tiles;
         let tileOne = activeTiles[0];
@@ -107,6 +114,9 @@ export class Square extends Shape {
         this.name = Shapes.SQUARE;
     }
 
+    /**
+     * Placeholder in order for an error not to be thrown when the current shape is the Square;
+     */
     rotate = () => {
         return;
     }
@@ -119,6 +129,13 @@ export class Bar extends Shape {
         this.name = Shapes.BAR;
     }
 
+    /**
+     * Rotates the current shape by de-activating the tiles and re-positioning them as if rotating the block
+     * clockwise;
+     * @param {*} numberOfTiles - overall number of tiles on the playing field;
+     * @param {*} tileMap - the model Map of all tile objects;
+     * @param {*} tiles - currently active tiles - indicating where the current shape is located;
+     */
     rotate = (numberOfTiles, tileMap, tiles) => {
         let activeTiles = tiles;
         let tileOne = activeTiles[0];
@@ -157,6 +174,13 @@ export class Step extends Shape {
         this.name = Shapes.STEP;
     }
 
+    /**
+     * Rotates the current shape by de-activating the tiles and re-positioning them as if rotating the block
+     * clockwise;
+     * @param {*} numberOfTiles - overall number of tiles on the playing field;
+     * @param {*} tileMap - the model Map of all tile objects;
+     * @param {*} tiles - currently active tiles - indicating where the current shape is located;
+     */
     rotate = (numberOfTiles, tileMap, tiles) => {
         let activeTiles = tiles;
         let tileOne = activeTiles[0];
@@ -195,6 +219,13 @@ export class El extends Shape {
         this.name = Shapes.EL;
     }
 
+    /**
+     * Rotates the current shape by de-activating the tiles and re-positioning them as if rotating the block
+     * clockwise;
+     * @param {*} numberOfTiles - overall number of tiles on the playing field;
+     * @param {*} tileMap - the model Map of all tile objects;
+     * @param {*} tiles - currently active tiles - indicating where the current shape is located;
+     */
     rotate = (numberOfTiles, tileMap, tiles) => {
         let activeTiles = tiles;
         let tileOne = activeTiles[0];

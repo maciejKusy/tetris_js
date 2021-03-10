@@ -63,21 +63,35 @@ export class GameView {
         nextShapeDisplay.textContent = shape.name;
     }
 
+    /**
+     * Renders the current player score;
+     * @param {number} score - current player score (stored in the model);
+     */
     renderScore = score => {
         const scoreDisplay = document.getElementById('score-display');
         scoreDisplay.textContent = score;
     }
 
+    /**
+     * Renders the Game Over overlay visible;
+     */
     renderGameOverOverlay = () => {
         const overlay = document.getElementById('gameover');
         overlay.classList.remove('gameover-overlay--closed');
     }
 
+    /**
+     * Renders the Game Over overlay invisible;
+     */
     derenderGameOverOverlay = () => {
         const overlay = document.getElementById('gameover');
         overlay.classList.add('gameover-overlay--closed');
     }
 
+    /**
+     * Renders the final player score on the Game Over overlay;
+     * @param {number} score - the final score achieved by the player;
+     */
     renderFinalScore = score => {
         const display = document.getElementById('final-score');
         display.textContent = score;

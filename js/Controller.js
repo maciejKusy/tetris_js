@@ -24,6 +24,9 @@ export class Controller {
         document.addEventListener("keydown", this.handleArrowPress);
     }
 
+    /**
+     * Encapsulates all the steps necessary to clear a particular row of the playing field;
+     */
     removeSingleRow = () => {
         this.view.derenderOccupiedTiles();
         this.model.removeFullRows();
@@ -31,6 +34,9 @@ export class Controller {
         this.view.renderOccupiedTiles();
     }
 
+    /**playing field and makes the game over overlay visible enabling the user to re-start;
+     * Resets the 
+     */
     gameOver = () => {
         this.view.derenderOccupiedTiles();
         document.removeEventListener("keydown", this.handleArrowPress);
@@ -85,6 +91,11 @@ export class Controller {
         }
     }
 
+    /**
+     * Renders the game over overlay invisible and re-sets the game by replacing the model with a fresh instance
+     * of the model class;
+     * @param {Event} clickEvent - the click event;
+     */
     handleNewGameButtonClicked = clickEvent => {
         if (clickEvent.target.id === "newgame-button") {
             this.view.derenderGameOverOverlay();
