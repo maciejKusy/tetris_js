@@ -1,4 +1,4 @@
-import {Shapes, NUMBER_OF_TILES, DEFAULT_TIME_BETWEEN_FALLS, INVISIBLE_COLUMN_INDEX, RIGHT_BORDER_INDEX, SINGLE_ROW_SCORE} from './constants.js';
+import {Shapes, NUMBER_OF_TILES, DEFAULT_TIME_BETWEEN_FALLS, INVISIBLE_COLUMN_INDEX, RIGHT_BORDER_INDEX, SINGLE_ROW_SCORE, MULTIPLIER_FACTOR} from './constants.js';
 import {Tile} from './Tile.js';
 import {Triangle, Square, Bar, Step, El} from './Shape.js';
 
@@ -10,7 +10,22 @@ export class GameField {
         this.nextShape = this.getRandomShape();
         this.timeBetweenFalls = DEFAULT_TIME_BETWEEN_FALLS;
         this.score = 0;
+        this.multiplier = 1;
         this.setUpNewShape();
+    }
+
+    /**
+     * Raises the multiplier by multiplying it by the constant factor;
+     */
+    raiseMultiplier = () => {
+        this.multiplier *= MULTIPLIER_FACTOR;
+    }
+
+    /**
+     * sets the multiplier back to the default value;
+     */
+    resetMultiplier = () => {
+        this.multiplier = 1;
     }
 
     /**
@@ -161,7 +176,6 @@ export class GameField {
         for (let index = 210; index >= 1; index -= INVISIBLE_COLUMN_INDEX) {
             if (this.checkIfRowFull(index)) {
                 this.deoccupyRow(index);
-                this.score += SINGLE_ROW_SCORE;
                 this.moveAllOccupiedDown(index);
             }
         }
@@ -203,6 +217,9 @@ export class GameField {
     deoccupyRow = startingIndex => {
         let start = startingIndex;
         let stop = start + RIGHT_BORDER_INDEX;
+        console.log(SINGLE_ROW_SCORE * this.multiplier);
+        this.score += (SINGLE_ROW_SCORE * this.multiplier);
+        this.raiseMultiplier();
 
         for (let index = start; index < stop; index++) {
             this.tiles.get(index).occupied = false;

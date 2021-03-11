@@ -33,5 +33,7 @@ export const RIGHT_ARROW_KEYCODE = 39;
 
 export const UP_ARROW_KEYCODE = 38;
 
+export const MULTIPLIER_FACTOR = 2;
+
 
 

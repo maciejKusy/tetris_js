@@ -63,6 +63,7 @@ export class Controller {
             }
             this.model.setUpNewShape();
             this.view.renderNextShape(this.model.nextShape);
+            this.model.resetMultiplier();
         }
         this.view.renderCurrentShape(this.model.currentShape.coordinates);
     }
