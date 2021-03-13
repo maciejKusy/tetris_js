@@ -15,6 +15,17 @@ $mainFont: "Main";
 $mainFontColor: rgb(178, 176, 202);
 $mainFontShadowColor: rgb(0, 0, 0);
 
+@mixin mainFontStyling {
+    color: $mainFontColor;
+    font-family: $mainFont;
+    font-size: 2rem;
+    text-shadow: 3px 3px 5px $mainFontShadowColor;
+}
+
+@mixin mainContainerBorder {
+    border: 10px inset $mainContainerBorderColor;
+}
+
 body {
     background-size: cover;
     background-color: $bodyBackgroundColor;
@@ -28,9 +39,9 @@ body {
 }
 
 .main-container {
+    @include mainContainerBorder;
     align-items: center;
     background-color: $mainContainerColor;
-    border: 10px inset $mainContainerBorderColor;
     border-radius: 8px;
     display: inline-flex;
     flex-direction: column;
@@ -38,15 +49,13 @@ body {
 }
 
 .side-container {
+    @include mainFontStyling;
     align-items: center;
     background-color: $mainContainerColor;
     border-radius: 8px;
     box-shadow: 5px 5px 14px $backgroundShadowColor;
-    color: $mainFontColor;
     display: flex;
     flex-direction: column;
-    font-family: $mainFont;
-    font-size: 2rem;
     height: 80vh;
     margin-top: 1.25rem;
     width: 25vw;
@@ -88,24 +97,33 @@ body {
 
 .gameover-popup {
     display: flex;
-    height: 30vh;
+    height: 50vh;
     width: 40vw;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
     padding-top: 1rem;
     span {
-        color: $mainFontColor;
-        font-family: $mainFont;
-        font-size: 2rem;
-        text-shadow: 3px 3px 5px $mainFontShadowColor;
+        @include mainFontStyling;
     }
     button {
+        @include mainFontStyling;
+        @include mainContainerBorder;
+        background-color: $mainContainerColor;
+        border-radius: 50%;
+        box-shadow: 5px 5px 14px $backgroundShadowColor;
         display: block;
-        flex-grow: 0;
-    }    
-}
+        margin-top: 5rem;
+        height: 12rem;
+        width: 12rem;
+        transition: all 0.5s;
+        &:hover {
+            background-color: $occupiedTilecolor;
+            margin-top: 4rem;
+            height: 13rem;
+            width: 13rem;
+            transition: all 0.5s;
+        }
 
-.game-won-popup__final-time {
-    font-size: 2rem;
+    }    
 }
