@@ -1,4 +1,4 @@
-import {Shapes, NUMBER_OF_TILES, DEFAULT_TIME_BETWEEN_FALLS, INVISIBLE_COLUMN_INDEX, RIGHT_BORDER_INDEX, SINGLE_ROW_SCORE, MULTIPLIER_FACTOR} from './constants.js';
+import {Shapes, NUMBER_OF_TILES, DEFAULT_TIME_BETWEEN_FALLS, INVISIBLE_COLUMN_INDEX, RIGHT_BORDER_INDEX, SINGLE_ROW_SCORE, SCORE_MULTIPLIER_FACTOR, LEVEL_REQUIREMENT_FACTOR, FIRST_LEVEL_REQUIREMENT} from './constants.js';
 import {Tile} from './Tile.js';
 import {Triangle, Square, Bar, Step, El} from './Shape.js';
 
@@ -10,15 +10,24 @@ export class GameField {
         this.nextShape = this.getRandomShape();
         this.timeBetweenFalls = DEFAULT_TIME_BETWEEN_FALLS;
         this.score = 0;
+        this.level = 1;
         this.multiplier = 1;
+        this.nextLevelRequirement = FIRST_LEVEL_REQUIREMENT;
         this.setUpNewShape();
+    }
+
+    checkIfNextLevelAchieved = () => {
+        if (this.score >= this.nextLevelRequirement) {
+            this.level++;
+            this.nextLevelRequirement *= LEVEL_REQUIREMENT_FACTOR;
+        }
     }
 
     /**
      * Raises the multiplier by multiplying it by the constant factor;
      */
     raiseMultiplier = () => {
-        this.multiplier *= MULTIPLIER_FACTOR;
+        this.multiplier *= SCORE_MULTIPLIER_FACTOR;
     }
 
     /**
@@ -107,6 +116,11 @@ export class GameField {
         this.currentShape.activateTiles(this.currentShape.coordinates, this.tiles);
     }
 
+    /**
+     * Verifires if the space to the left of the current shape is blocked for movement;
+     * @param {number} coordinate - on of the current coordinates of the active shape;
+     * @returns boolean;
+     */
     checkIfBlockedLeft = coordinate => {
         if (coordinate % INVISIBLE_COLUMN_INDEX === 1 || this.tiles.get(coordinate - 1).occupied && !this.currentShape.coordinates.includes(coordinate - 1)) {
             return true;
@@ -217,8 +231,8 @@ export class GameField {
     deoccupyRow = startingIndex => {
         let start = startingIndex;
         let stop = start + RIGHT_BORDER_INDEX;
-        console.log(SINGLE_ROW_SCORE * this.multiplier);
         this.score += (SINGLE_ROW_SCORE * this.multiplier);
+        this.checkIfNextLevelAchieved();
         this.raiseMultiplier();
 
         for (let index = start; index < stop; index++) {

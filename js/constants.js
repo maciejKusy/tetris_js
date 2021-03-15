@@ -6,11 +6,11 @@ export const Rotations = {
 }
 
 export const Shapes = {
-    TRIANGLE: "TRIANGLE",
-    SQUARE: "SQUARE",
+    // TRIANGLE: "TRIANGLE",
+    // SQUARE: "SQUARE",
     BAR: "BAR",
-    STEP: "STEP",
-    EL: "EL"
+    // STEP: "STEP",
+    // EL: "EL"
 }
 
 export const OCCUPIED_TILE_CLASS = "main-container__tile--occupied";
@@ -33,7 +33,13 @@ export const RIGHT_ARROW_KEYCODE = 39;
 
 export const UP_ARROW_KEYCODE = 38;
 
-export const MULTIPLIER_FACTOR = 2;
+export const SCORE_MULTIPLIER_FACTOR = 2;
+
+export const LEVEL_REQUIREMENT_FACTOR = 2;
+
+export const FIRST_LEVEL_REQUIREMENT = 1000;
+
+export const TIME_INTERVAL_REDUCTION_PER_LEVEL = 500;
 
 
 

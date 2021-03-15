@@ -73,6 +73,15 @@ export class GameView {
     }
 
     /**
+     * Renders the current player level;
+     * @param {number} score - current player level (stored in the model);
+     */
+    renderLevel = level => {
+        const levelDisplay = document.getElementById('level-display');
+        levelDisplay.textContent = level;
+    }
+
+    /**
      * Renders the Game Over overlay visible;
      */
     renderGameOverOverlay = () => {

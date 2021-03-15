@@ -20,6 +20,7 @@ export class Controller {
         this.view.renderCurrentShape(this.model.currentShape.coordinates); 
         this.view.renderNextShape(this.model.nextShape);
         this.view.renderScore(this.model.score);
+        this.view.renderLevel(this.model.level);
         this.fallingInterval = setInterval(this.shapeFallDown, this.model.timeBetweenFalls);
         document.addEventListener("keydown", this.handleArrowPress);
     }
@@ -31,6 +32,7 @@ export class Controller {
         this.view.derenderOccupiedTiles();
         this.model.removeFullRows();
         this.view.renderScore(this.model.score);
+        this.view.renderLevel(this.model.level);
         this.view.renderOccupiedTiles();
     }
 
