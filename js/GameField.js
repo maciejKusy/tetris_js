@@ -11,14 +11,20 @@ export class GameField {
         this.timeBetweenFalls = DEFAULT_TIME_BETWEEN_FALLS;
         this.score = 0;
         this.level = 1;
+        this.levelAdvanced = false;
         this.multiplier = 1;
         this.nextLevelRequirement = FIRST_LEVEL_REQUIREMENT;
         this.setUpNewShape();
     }
 
+    /**
+     * Checks if the level advancement flag is raised on the model instance indicating that an increase
+     * in difficulty is due;
+     */
     checkIfNextLevelAchieved = () => {
         if (this.score >= this.nextLevelRequirement) {
             this.level++;
+            this.levelAdvanced = true;
             this.nextLevelRequirement *= LEVEL_REQUIREMENT_FACTOR;
         }
     }

@@ -6,11 +6,11 @@ export const Rotations = {
 }
 
 export const Shapes = {
-    // TRIANGLE: "TRIANGLE",
-    // SQUARE: "SQUARE",
+    TRIANGLE: "TRIANGLE",
+    SQUARE: "SQUARE",
     BAR: "BAR",
-    // STEP: "STEP",
-    // EL: "EL"
+    STEP: "STEP",
+    EL: "EL"
 }
 
 export const OCCUPIED_TILE_CLASS = "main-container__tile--occupied";
@@ -39,7 +39,7 @@ export const LEVEL_REQUIREMENT_FACTOR = 2;
 
 export const FIRST_LEVEL_REQUIREMENT = 1000;
 
-export const TIME_INTERVAL_REDUCTION_PER_LEVEL = 500;
+export const TIME_INTERVAL_REDUCTION_PER_LEVEL = 100;
 
 
 

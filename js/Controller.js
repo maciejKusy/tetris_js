@@ -1,4 +1,4 @@
-import {DOWN_ARROW_KEYCODE, LEFT_ARROW_KEYCODE, RIGHT_ARROW_KEYCODE, UP_ARROW_KEYCODE} from './constants.js';
+import {DOWN_ARROW_KEYCODE, LEFT_ARROW_KEYCODE, RIGHT_ARROW_KEYCODE, UP_ARROW_KEYCODE, TIME_INTERVAL_REDUCTION_PER_LEVEL} from './constants.js';
 import {GameField} from './GameField.js'
 
 export class Controller {
@@ -9,6 +9,26 @@ export class Controller {
         this.view.derenderRightBorder();
         this.setUpNewGame();        
         this.view.newGameButton.addEventListener("click", this.handleNewGameButtonClicked);
+    }
+
+    /**
+     * Checks whether the flag indicating that a level advancement has taken place on the model is set
+     * to true, re-sets the flag, changes the time between each block fall and re-sets the interval;
+     */
+    checkIfLevelAdvanced = () => {
+        if (this.model.levelAdvanced === true) {
+            this.model.levelAdvanced = false;
+            clearInterval(this.fallingInterval);
+            this.raiseDifficulty();
+            this.fallingInterval = setInterval(this.shapeFallDown, this.model.timeBetweenFalls);
+        }
+    }
+
+    /**
+     * Decreases the time between each fall thus increasing the difficulty of the game;
+     */
+    raiseDifficulty = () => {
+        this.model.timeBetweenFalls -= TIME_INTERVAL_REDUCTION_PER_LEVEL;
     }
 
     /**
@@ -31,6 +51,7 @@ export class Controller {
     removeSingleRow = () => {
         this.view.derenderOccupiedTiles();
         this.model.removeFullRows();
+        this.checkIfLevelAdvanced();
         this.view.renderScore(this.model.score);
         this.view.renderLevel(this.model.level);
         this.view.renderOccupiedTiles();

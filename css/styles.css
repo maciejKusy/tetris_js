@@ -154,6 +154,7 @@ body {
 
 .gameover-popup button:hover {
   background-color: #323d30;
+  cursor: pointer;
   margin-top: 4rem;
   height: 13rem;
   width: 13rem;

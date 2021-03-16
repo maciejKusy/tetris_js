@@ -119,6 +119,7 @@ body {
         transition: all 0.5s;
         &:hover {
             background-color: $occupiedTilecolor;
+            cursor: pointer;
             margin-top: 4rem;
             height: 13rem;
             width: 13rem;
