@@ -59,6 +59,10 @@ body {
     height: 80vh;
     margin-top: 1.25rem;
     width: 25vw;
+    &__shape-display {
+        max-height: 5rem;
+        max-width: 10rem;
+    }
 }
 
 .main-container__tilerow {

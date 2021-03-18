@@ -60,7 +60,8 @@ export class GameView {
      */
     renderNextShape = shape => {
         const nextShapeDisplay = document.getElementById('next-shape-display');
-        nextShapeDisplay.textContent = shape.name;
+        nextShapeDisplay.src = `./img/${shape.name}.png`;
+        console.log(nextShapeDisplay.src);
     }
 
     /**
