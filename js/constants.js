@@ -10,6 +10,7 @@ export const Shapes = {
     SQUARE: "SQUARE",
     BAR: "BAR",
     STEP: "STEP",
+    STEPTWO: "STEPTWO",
     EL: "EL"
 }
 

@@ -212,6 +212,51 @@ export class Step extends Shape {
     }
 }
 
+export class StepTwo extends Shape {
+    constructor() {
+        super();
+        this.coordinates = [5, 6, 15, 16];
+        this.name = Shapes.STEPTWO;
+    }
+
+    /**
+     * Rotates the current shape by de-activating the tiles and re-positioning them as if rotating the block
+     * clockwise;
+     * @param {*} numberOfTiles - overall number of tiles on the playing field;
+     * @param {*} tileMap - the model Map of all tile objects;
+     * @param {*} tiles - currently active tiles - indicating where the current shape is located;
+     */
+    rotate = (numberOfTiles, tileMap, tiles) => {
+        let activeTiles = tiles;
+        let tileOne = activeTiles[1];
+        let tileTwo = activeTiles[2];
+        let tileThree = activeTiles[3];
+
+        switch (this.rotationState) {
+            case Rotations.DEFAULT:
+                if (this.checkRotationAvailability([tileOne + 10, tileTwo - 22, tileThree - 12], numberOfTiles, tileMap, activeTiles)) {
+                    this.deactivateTiles(activeTiles, tileMap);
+                    activeTiles[1] += 10;
+                    activeTiles[2] -= 22;
+                    activeTiles[3] -= 12;
+                    this.rotationState = Rotations.ONEROTATION;
+                    this.activateTiles(activeTiles, tileMap);
+                    break;
+                } break;
+            case Rotations.ONEROTATION:
+                if (this.checkRotationAvailability([tileOne - 10, tileTwo + 22, tileThree + 12], numberOfTiles, tileMap, activeTiles)) {
+                    this.deactivateTiles(activeTiles, tileMap);
+                    activeTiles[1] -= 10;
+                    activeTiles[2] += 22;
+                    activeTiles[3] += 12;
+                    this.rotationState = Rotations.DEFAULT;
+                    this.activateTiles(activeTiles, tileMap);
+                    break;
+                } break;
+        }
+    }
+}
+
 export class El extends Shape {
     constructor() {
         super();
