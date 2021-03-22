@@ -321,3 +321,68 @@ export class El extends Shape {
         }
     }
 }
+
+export class ElTwo extends Shape {
+    constructor() {
+        super();
+        this.coordinates = [6, 15, 16, 17];
+        this.name = Shapes.EL;
+    }
+
+    /**
+     * Rotates the current shape by de-activating the tiles and re-positioning them as if rotating the block
+     * clockwise;
+     * @param {*} numberOfTiles - overall number of tiles on the playing field;
+     * @param {*} tileMap - the model Map of all tile objects;
+     * @param {*} tiles - currently active tiles - indicating where the current shape is located;
+     */
+    rotate = (numberOfTiles, tileMap, tiles) => {
+        let activeTiles = tiles;
+        let tileOne = activeTiles[0];
+        let tileTwo = activeTiles[1];
+        let tileThree = activeTiles[2];
+
+        switch (this.rotationState) {
+            case Rotations.DEFAULT:
+                if (this.checkRotationAvailability([tileOne + 12, tileTwo - 20, tileThree - 10], numberOfTiles, tileMap, activeTiles)) {
+                    this.deactivateTiles(activeTiles, tileMap);
+                    activeTiles[0] += 12;
+                    activeTiles[1] -= 20;
+                    activeTiles[2] -= 10;
+                    this.rotationState = Rotations.ONEROTATION;
+                    this.activateTiles(activeTiles, tileMap);
+                    break;
+                } break;
+            case Rotations.ONEROTATION:
+                if (this.checkRotationAvailability([tileOne + 10, tileTwo + 24, tileThree + 12], numberOfTiles, tileMap, activeTiles)) {
+                    this.deactivateTiles(activeTiles, tileMap);
+                    activeTiles[0] += 10;
+                    activeTiles[1] += 24;
+                    activeTiles[2] += 12;
+                    this.rotationState = Rotations.TWOROTATIONS;
+                    this.activateTiles(activeTiles, tileMap);
+                    break;
+                } break;
+            case Rotations.TWOROTATIONS:
+                if (this.checkRotationAvailability([tileOne - 12, tileTwo + 20, tileThree + 10], numberOfTiles, tileMap, activeTiles)) {
+                    this.deactivateTiles(activeTiles, tileMap);
+                    activeTiles[0] -= 12;
+                    activeTiles[1] += 20;
+                    activeTiles[2] += 10;
+                    this.rotationState = Rotations.THREEROTATIONS;
+                    this.activateTiles(activeTiles, tileMap);
+                    break;
+                } break;
+            case Rotations.THREEROTATIONS:
+                if (this.checkRotationAvailability([tileOne - 10, tileTwo - 24, tileThree - 12], numberOfTiles, tileMap, activeTiles)) {
+                    this.deactivateTiles(activeTiles, tileMap);
+                    activeTiles[0] -= 10;
+                    activeTiles[1] -= 24;
+                    activeTiles[2] -= 12;
+                    this.rotationState = Rotations.DEFAULT;
+                    this.activateTiles(activeTiles, tileMap);
+                    break;
+                } break;
+        }
+    }
+}

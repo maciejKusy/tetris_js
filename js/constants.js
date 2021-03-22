@@ -11,7 +11,8 @@ export const Shapes = {
     BAR: "BAR",
     STEP: "STEP",
     STEPTWO: "STEPTWO",
-    EL: "EL"
+    EL: "EL",
+    ELTWO: "ELTWO"
 }
 
 export const OCCUPIED_TILE_CLASS = "main-container__tile--occupied";

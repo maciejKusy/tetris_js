@@ -1,6 +1,6 @@
 import {Shapes, NUMBER_OF_TILES, DEFAULT_TIME_BETWEEN_FALLS, INVISIBLE_COLUMN_INDEX, RIGHT_BORDER_INDEX, SINGLE_ROW_SCORE, SCORE_MULTIPLIER_FACTOR, LEVEL_REQUIREMENT_FACTOR, FIRST_LEVEL_REQUIREMENT} from './constants.js';
 import {Tile} from './Tile.js';
-import {Triangle, Square, Bar, Step, El, StepTwo} from './Shape.js';
+import {Triangle, Square, Bar, Step, El, StepTwo, ElTwo} from './Shape.js';
 
 export class GameField {
     constructor() {
@@ -90,6 +90,8 @@ export class GameField {
                 return new StepTwo();
             case "EL":
                 return new El();
+            case "ELTWO":
+                return new ElTwo();
         }
     }
 
