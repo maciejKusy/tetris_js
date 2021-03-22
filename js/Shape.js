@@ -326,7 +326,7 @@ export class ElTwo extends Shape {
     constructor() {
         super();
         this.coordinates = [6, 15, 16, 17];
-        this.name = Shapes.EL;
+        this.name = Shapes.ELTWO;
     }
 
     /**
