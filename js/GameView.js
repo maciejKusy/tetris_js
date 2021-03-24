@@ -105,4 +105,15 @@ export class GameView {
         const display = document.getElementById('final-score');
         display.textContent = score;
     }
+
+    renderRowScore = () => {
+        let rowScore = document.createElement("div");
+        rowScore.textContent = "Score!";
+        document.body.appendChild(rowScore);
+        rowScore.classList.add("row-points");
+        rowScore.classList.add("row-points--visible");
+        rowScore.style.animation = "score-display 2s linear";
+        setTimeout(function() {document.body.removeChild(rowScore);}, 2000);
+        
+    }
 }

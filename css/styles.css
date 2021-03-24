@@ -3,6 +3,28 @@
   src: url("../fonts/Minercraftory.ttf");
 }
 
+@-webkit-keyframes score-display {
+  0% {
+    bottom: 1rem;
+    left: 37rem;
+  }
+  100% {
+    bottom: 3rem;
+    left: 39rem;
+  }
+}
+
+@keyframes score-display {
+  0% {
+    bottom: 1rem;
+    left: 37rem;
+  }
+  100% {
+    bottom: 3rem;
+    left: 39rem;
+  }
+}
+
 body {
   background-size: cover;
   background-color: #b4afaf;
@@ -165,5 +187,14 @@ body {
   width: 13rem;
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
+}
+
+.row-points {
+  position: absolute;
+  bottom: 1rem;
+  left: 5rem;
+  font-family: "Main";
+  font-size: 4rem;
+  color: red;
 }
 /*# sourceMappingURL=styles.css.map */

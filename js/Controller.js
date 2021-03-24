@@ -79,6 +79,7 @@ export class Controller {
         } else {
             while (this.model.checkForAnyFullRows()) {
                 this.removeSingleRow();
+                this.view.renderRowScore();
             }
             if (this.model.checkIfGameOver()) {
                 this.gameOver();
