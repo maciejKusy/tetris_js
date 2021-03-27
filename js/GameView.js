@@ -106,14 +106,29 @@ export class GameView {
         display.textContent = score;
     }
 
+    /**
+     * Creates and renders the animated "Score!" letters indicating that the player gained points;
+     */
     renderRowScore = () => {
         let rowScore = document.createElement("div");
         rowScore.textContent = "Score!";
         document.body.appendChild(rowScore);
         rowScore.classList.add("row-points");
-        rowScore.classList.add("row-points--visible");
         rowScore.style.animation = "score-display 2s linear";
         setTimeout(function() {document.body.removeChild(rowScore);}, 2000);
         
+    }
+
+    /**
+     * Creates and renders the animated "Level Up!" letters indicating that the player has gone up
+     * a level;
+     */
+    renderLevelUp = () => {
+        let levelUp = document.createElement("div");
+        levelUp.textContent = "Level up!";
+        document.body.appendChild(levelUp);
+        levelUp.classList.add("level-up");
+        levelUp.style.animation = "level-up-display 2.5s linear";
+        setTimeout(function() {document.body.removeChild(levelUp);}, 2500);
     }
 }

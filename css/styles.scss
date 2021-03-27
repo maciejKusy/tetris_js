@@ -4,8 +4,13 @@
 }
 
 @keyframes score-display {
-    0% {bottom: 1rem; left: 37rem;}
-    100% {bottom: 3rem; left: 39rem;}
+    0% {bottom: 14rem; left: 37rem;}
+    100% {bottom: 17rem; left: 39rem;}
+}
+
+@keyframes level-up-display {
+    0% {bottom: 10rem; left: 37rem;}
+    100% {bottom: 12rem; left: 39rem;}
 }
 
 $bodyBackgroundColor: rgb(180, 175, 175);
@@ -19,6 +24,8 @@ $occupiedTileBorderColor: rgb(63, 80, 65);
 $mainFont: "Main";
 $mainFontColor: rgb(178, 176, 202);
 $mainFontShadowColor: rgb(0, 0, 0);
+$scoreAnimationColor: rgb(0, 119, 216);
+$levelUpAnimationColor: rgb(255, 153, 0);
 
 @mixin mainFontStyling {
     color: $mainFontColor;
@@ -139,9 +146,15 @@ body {
 
 .row-points {
     position: absolute;
-    bottom: 1rem;
-    left: 5rem;
+    font-family: $mainFont;
+    font-size: 3rem;
+    color: $scoreAnimationColor;
+}
+
+.level-up {
+    position: absolute;
     font-family: $mainFont;
     font-size: 4rem;
-    color: red;
+    color:$levelUpAnimationColor;
+
 }

@@ -5,22 +5,44 @@
 
 @-webkit-keyframes score-display {
   0% {
-    bottom: 1rem;
+    bottom: 14rem;
     left: 37rem;
   }
   100% {
-    bottom: 3rem;
+    bottom: 17rem;
     left: 39rem;
   }
 }
 
 @keyframes score-display {
   0% {
-    bottom: 1rem;
+    bottom: 14rem;
     left: 37rem;
   }
   100% {
-    bottom: 3rem;
+    bottom: 17rem;
+    left: 39rem;
+  }
+}
+
+@-webkit-keyframes level-up-display {
+  0% {
+    bottom: 10rem;
+    left: 37rem;
+  }
+  100% {
+    bottom: 12rem;
+    left: 39rem;
+  }
+}
+
+@keyframes level-up-display {
+  0% {
+    bottom: 10rem;
+    left: 37rem;
+  }
+  100% {
+    bottom: 12rem;
     left: 39rem;
   }
 }
@@ -191,10 +213,15 @@ body {
 
 .row-points {
   position: absolute;
-  bottom: 1rem;
-  left: 5rem;
+  font-family: "Main";
+  font-size: 3rem;
+  color: #0077d8;
+}
+
+.level-up {
+  position: absolute;
   font-family: "Main";
   font-size: 4rem;
-  color: red;
+  color: #ff9900;
 }
 /*# sourceMappingURL=styles.css.map */

@@ -17,6 +17,7 @@ export class Controller {
      */
     checkIfLevelAdvanced = () => {
         if (this.model.levelAdvanced === true) {
+            this.view.renderLevelUp();
             this.model.levelAdvanced = false;
             clearInterval(this.fallingInterval);
             this.raiseDifficulty();
