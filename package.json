@@ -1,0 +1,28 @@
+{
+  "name": "tetris_js",
+  "version": "1.0.0",
+  "description": "A tetris clone made by Maciej Kusy",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "mocha"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maciejKusy/tetris_js.git"
+  },
+  "keywords": [
+    "tetris",
+    "javascript"
+  ],
+  "author": "Maciej Kusy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maciejKusy/tetris_js/issues"
+  },
+  "homepage": "https://github.com/maciejKusy/tetris_js#readme",
+  "devDependencies": {
+    "mocha": "^8.3.2"
+  }
+}
