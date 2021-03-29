@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "test": "mocha"
-
   },
   "repository": {
     "type": "git",
@@ -23,6 +22,9 @@
   },
   "homepage": "https://github.com/maciejKusy/tetris_js#readme",
   "devDependencies": {
+    "chai": "^4.3.4",
+    "jsdom": "^16.5.2",
     "mocha": "^8.3.2"
-  }
+  },
+  "dependencies": {}
 }
