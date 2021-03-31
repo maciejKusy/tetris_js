@@ -65,15 +65,15 @@ export class GameField {
     /**
      * Returns all the available shapes (starting coordinates);
      */
-    getShapes = () => {
-        return Object.keys(Shapes);
+    getShapes = (shapeList) => {
+        return Object.keys(shapeList);
     }
 
     /**
      * Randomly selects a shape (a set of astarting coordinates) from the available pool;
      */
      getRandomShape = () => {
-        const shapes = this.getShapes();
+        const shapes = this.getShapes(Shapes);
         let index = Math.floor(Math.random() * shapes.length);
         let selectedShape = shapes[index];
         
