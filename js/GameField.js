@@ -221,7 +221,7 @@ export class GameField {
 
     /**
      * Moves the 'occupied' status 'down' for all tiles above a given border tile (the start of a full row);
-     * @param {number} borderIndex - the start ('first ftrom the left') position of the full row;
+     * @param {number} borderIndex - the start ('first from the left') position of the full row;
      */
     moveAllOccupiedDown = borderIndex => {
         for (let index = (borderIndex - 2); index >= 1; index--) {

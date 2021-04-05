@@ -48,7 +48,7 @@ describe("Testing the model class - GameField:", function() {
             });
 
             it("Sets 'levelAdvanced' flag to 'true'", function() {
-                game.levelAdvanced = true;
+                assert.equal(game.levelAdvanced, true);
             });
 
             it("Sets (raises) 'newLevelRequirement' using appropriate constant factor value", function() {
@@ -164,7 +164,7 @@ describe("Testing the model class - GameField:", function() {
         });
 
         describe("canMoveDown():", function() {
-            context("Down move available:", function() {
+            context("-->  When down move available:", function() {
                 //Setup:
                 const game = new GameField();
                 game.currentShape.coordinates = [25, 26, 27, 37];
@@ -173,12 +173,12 @@ describe("Testing the model class - GameField:", function() {
                 const result = game.canMoveDown();
 
                 //Assertions:
-                it("Ret. 'true' if none of the tiles beneath the current shape are occupied - excluding tiles that are part of the current shape", function() {
+                it("Returns 'true'", function() {
                     expect(result).to.equal(true);
                 });
             });
 
-            context("Down move unavailable due to occupied tiles beneath:", function() {
+            context("-->  When down move unavailable due to occupied tiles beneath the current shape:", function() {
                 //Setup:
                 const game = new GameField();
                 game.currentShape.coordinates = [25, 26, 27, 28];
@@ -188,12 +188,12 @@ describe("Testing the model class - GameField:", function() {
                 const result = game.canMoveDown();
 
                 //Assertions:
-                it("Returns 'false' if any of the tiles beneath the current shape are occupied", function() {
+                it("Returns 'false'", function() {
                     expect(result).to.equal(false);
                 });
             });
 
-            context("Down move unavailable due to bottom of the play. field:", function() {
+            context("-->  When down move unavailable due to bottom of the playing field and no more space for current shape to go down:", function() {
                 //Setup:
                 const game = new GameField();
                 game.currentShape.coordinates = [215, 216, 217, 218];
@@ -202,7 +202,7 @@ describe("Testing the model class - GameField:", function() {
                 const result = game.canMoveDown();
 
                 //Assertions:
-                it("Ret. 'false' if no more space down available", function() {
+                it("Returns 'false'", function() {
                     expect(result).to.equal(false);
                 });
             });
@@ -224,7 +224,7 @@ describe("Testing the model class - GameField:", function() {
 
         describe("checkIfBlockedLeft()", function() {
 
-            context("Left move available", function() {
+            context("-->  When left move is available:", function() {
                 //Setup:
                 const game = new GameField();
                 game.currentShape.coordinates = [25, 26, 27, 28];
@@ -233,12 +233,12 @@ describe("Testing the model class - GameField:", function() {
                 const result = game.checkIfBlockedLeft(25);
 
                 //Asserions:
-                it("Returns false if the tiles immediately left of the active tiles are available", function(){
+                it("Returns 'false'", function(){
                     assert.equal(result, false);                    
                 });
             });
 
-            context("Left move unavailable due to occupied tiles to the left", function() {
+            context("-->  When left move unavailable due to occupied tiles to the left of the current shape:", function() {
                 //Setup:
                 const game = new GameField();
                 game.currentShape.coordinates = [25, 26, 27, 28];
@@ -248,12 +248,12 @@ describe("Testing the model class - GameField:", function() {
                 const result = game.checkIfBlockedLeft(25);
 
                 //Assertions:
-                it("Returns true if the tiles immediately to the left of the active tiles are occupied", function() {
+                it("Returns 'true'", function() {
                     assert.equal(result, true);
                 });
             });
 
-            context("Left move unavailable due to current shape being located at the left edge of the field", function() {
+            context("-->  When left move unavailable due to current shape being located at the left edge of the field:", function() {
                 //Setup:
                 const game = new GameField();
                 game.currentShape.coordinates = [23, 24, 25, 26];
@@ -262,7 +262,7 @@ describe("Testing the model class - GameField:", function() {
                 const result = game.checkIfBlockedLeft(23);
 
                 //Assertions:
-                it("Returns true if there are no more tiles in the row immediately to the left of the active tiles", function() {
+                it("Returns 'true'", function() {
                     assert.equal(result, true);
                 });
             });
@@ -270,7 +270,7 @@ describe("Testing the model class - GameField:", function() {
 
         describe("moveCurrentShapeLeft()", function() {
             
-            context("Move left available", function() {
+            context("-->  When move left available:", function() {
                 //Setup:
                 const game = new GameField();
                 game.currentShape.coordinates = [24, 25, 26, 27];
@@ -284,7 +284,7 @@ describe("Testing the model class - GameField:", function() {
                 });
             });
 
-            context("Move left unavailable due to occupied tiles", function() {
+            context("-->  When left move unavailable due to occupied tiles to the left of the current shape:", function() {
                 //Setup:
                 const game = new GameField();
                 game.currentShape.coordinates = [24, 25, 26, 27];
@@ -294,12 +294,12 @@ describe("Testing the model class - GameField:", function() {
                 game.moveCurrentShapeLeft();
 
                 //Assertions:
-                it("Does nothing if any tiles on the left of the current shape are occupied", function() {
+                it("Does nothing", function() {
                     expect(game.currentShape.coordinates).to.deep.equal([24, 25, 26, 27]);
                 });
             });
 
-            context("Move left unavailable due to no more space to the left", function() {
+            context("-->  When left move unavailable due to current shape being located at the left edge of the field:", function() {
                 //Setup:
                 const game = new GameField();
                 game.currentShape.coordinates = [23, 24, 25, 26];
@@ -308,7 +308,7 @@ describe("Testing the model class - GameField:", function() {
                 game.moveCurrentShapeLeft();
 
                 //Assertions:
-                it("Does nothing if there are no more tiles available in the row to the left of the current shape", function() {
+                it("Does nothing", function() {
                     expect(game.currentShape.coordinates).to.deep.equal([23, 24, 25, 26]);
                 });
             });
@@ -316,7 +316,7 @@ describe("Testing the model class - GameField:", function() {
 
         describe("checkIfBlockedRight()", function() {
 
-            context("Right move available", function() {
+            context("-->  When right move available:", function() {
                 //Setup:
                 const game = new GameField();
                 game.currentShape.coordinates = [25, 26, 27, 28];
@@ -325,12 +325,12 @@ describe("Testing the model class - GameField:", function() {
                 const result = game.checkIfBlockedRight(28);
 
                 //Asserions:
-                it("Returns false if the tiles immediately right of the active tiles are available", function(){
+                it("Returns 'false'", function(){
                     assert.equal(result, false);                    
                 });
             });
 
-            context("Right move unavailable due to occupied tiles to the right", function() {
+            context("-->  When right move unavailable due to occupied tiles to the right of the current shape:", function() {
                 //Setup:
                 const game = new GameField();
                 game.currentShape.coordinates = [25, 26, 27, 28];
@@ -340,12 +340,12 @@ describe("Testing the model class - GameField:", function() {
                 const result = game.checkIfBlockedRight(28);
 
                 //Assertions:
-                it("Returns true if the tiles immediately to the right of the active tiles are occupied", function() {
+                it("Returns 'true'", function() {
                     assert.equal(result, true);
                 });
             });
 
-            context("Right move unavailable due to current shape being located at the right edge of the field", function() {
+            context("Right move unavailable due to current shape being located at the right edge of the field:", function() {
                 //Setup:
                 const game = new GameField();
                 game.currentShape.coordinates = [29, 30, 31, 32];
@@ -354,9 +354,165 @@ describe("Testing the model class - GameField:", function() {
                 const result = game.checkIfBlockedRight(32);
 
                 //Assertions:
-                it("Returns true if there are no more tiles in the row immediately to the right of the active tiles", function() {
+                it("Returns 'true'", function() {
                     assert.equal(result, true);
                 });
+            });
+        });
+
+        describe("moveCurrentShapeRight()", function() {
+            
+            context("-->  When move right available:", function() {
+                //Setup:
+                const game = new GameField();
+                game.currentShape.coordinates = [24, 25, 26, 27];
+
+                //Action:
+                game.moveCurrentShapeRight();
+
+                //Assertions:
+                it("Moves the current shape one tile to the right", function() {
+                    expect(game.currentShape.coordinates).to.deep.equal([25, 26, 27, 28]);
+                });
+            });
+
+            context("-->  When move right unavailable due to occupied tiles to the right of the current shape:", function() {
+                //Setup:
+                const game = new GameField();
+                game.currentShape.coordinates = [24, 25, 26, 27];
+                game.tiles.get(28).occupied = true;
+
+                //Action:
+                game.moveCurrentShapeRight();
+
+                //Assertions:
+                it("Does nothing", function() {
+                    expect(game.currentShape.coordinates).to.deep.equal([24, 25, 26, 27]);
+                });
+            });
+
+            context("Move right unavailable due current shape being located at the right edge of the field:", function() {
+                //Setup:
+                const game = new GameField();
+                game.currentShape.coordinates = [29, 30, 31, 32];
+
+                //Action:
+                game.moveCurrentShapeRight();
+
+                //Assertions:
+                it("Does nothing", function() {
+                    expect(game.currentShape.coordinates).to.deep.equal([29, 30, 31, 32]);
+                });
+            });
+        });
+
+        describe("checkForAnyFullRows()", function() {
+
+            context("-->  When there's no full rows on the playing field:", function() {
+                //Setup:
+                const game = new GameField();
+
+                //Action:
+                const result = game.checkForAnyFullRows();
+
+                //Assertions:
+                it("Returns 'false'", function() {
+                    assert.equal(result, false);
+                });
+            });
+
+            context("-->  When there's one full row on the playing field:", function() {
+                //Setup:
+                const game = new GameField();
+                for (let index = 34; index <= 43; index++) {
+                    game.tiles.get(index).occupied = true;
+                }
+
+                //Action:
+                const result = game.checkForAnyFullRows();
+
+                //Assertions:
+                it("Returns 'true'", function() {
+                    assert.equal(result.true);
+                });
+            });
+        });
+
+        describe("removeFullRows()", function() {
+
+            context("-->  When there's one full row on the playing field", function() {
+                //Setup:
+                const game = new GameField();
+                for (let index = 34; index <= 43; index++) {
+                    game.tiles.get(index).occupied = true;
+                }
+
+                //Action:
+                game.removeFullRows();
+
+                //Assertions:
+                it("Makes the row unoccupied again", function() {
+                    expect(game.tiles.get(34).occupied).to.equal(false);
+                    expect(game.tiles.get(35).occupied).to.equal(false);
+                    expect(game.tiles.get(36).occupied).to.equal(false);
+                    expect(game.tiles.get(37).occupied).to.equal(false);
+                    expect(game.tiles.get(38).occupied).to.equal(false);
+                    expect(game.tiles.get(39).occupied).to.equal(false);
+                    expect(game.tiles.get(40).occupied).to.equal(false);
+                    expect(game.tiles.get(41).occupied).to.equal(false);
+                    expect(game.tiles.get(42).occupied).to.equal(false);
+                    expect(game.tiles.get(43).occupied).to.equal(false);
+                });
+            });
+        });
+
+        describe("checkIfRowFull()", function() {
+
+            context("-->  When a row starting at a given index is fully occupied:", function() {
+                //Setup:
+                const game = new GameField();
+                for (let index = 34; index <= 43; index++) {
+                    game.tiles.get(index).occupied = true;
+                }
+
+                //Action:
+                const result = game.checkIfRowFull(34);
+
+                //Assertions:
+                it("Returns 'true'", function() {
+                    assert.equal(result, true);
+                });
+            });
+
+            context("-->  When a row starting at a given index is not fully occupied:", function() {
+                //Setup:
+                const game = new GameField();
+
+                //Action:
+                const result = game.checkIfRowFull(34);
+
+                //Assertions:
+                it("Returns 'false'", function() {
+                    assert.equal(result, false);
+                });
+            });
+        });
+
+        describe("moveAllOccupiedDown()", function() {
+            //Setup:
+            const game = new GameField();
+            game.tiles.get(34).occupied = true;
+            game.tiles.get(36).occupied = true;
+
+            //Action:
+            game.moveAllOccupiedDown(45);
+
+            //Assertions:
+            it("Moves all occupied tiles one row down and de-occupies their previous positions", function() {
+                expect(game.tiles.get(34).occupied).to.equal(false);
+                expect(game.tiles.get(45).occupied).to.equal(true);
+                expect(game.tiles.get(36).occupied).to.equal(false);
+                expect(game.tiles.get(47).occupied).to.equal(true);
             });
         });
     });
