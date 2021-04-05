@@ -515,5 +515,24 @@ describe("Testing the model class - GameField:", function() {
                 expect(game.tiles.get(47).occupied).to.equal(true);
             });
         });
+
+        describe("deoccupyRow()", function() {
+            //Setup:
+            const game = new GameField();
+            for (let index = 34; index <= 55; index++) {
+                game.tiles.get(index).occupied = true;
+            }
+
+            //Action:
+            game.deoccupyRow(34);
+
+            //Assertions:
+            it("De-occupies all the 10 tiles in a given row but does not change any other tiles", function() {
+                expect(game.tiles.get(34).occupied).to.equal(false);
+                expect(game.tiles.get(43).occupied).to.equal(false);
+                expect(game.tiles.get(44).occupied).to.equal(true);
+                expect(game.tiles.get(45).occupied).to.equal(true);
+            });
+        });
     });
 });
