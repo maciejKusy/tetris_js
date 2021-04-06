@@ -32,18 +32,20 @@ describe("Testing the model class - GameField:", function() {
     });
 
     describe("Testing methods:", function() {
-
+        
         describe("checkIfLevelAdvanced():", function() {
             //Setup (given):
-            const game = new GameField();
-            game.nextLevelRequirement = 100;
-            game.score = 200;
+            let game;
 
-            //Action (when):
-            game.checkIfNextLevelAchieved();
+            beforeEach(() => {
+                game = new GameField();
+                game.nextLevelRequirement = 100;
+                game.score = 200;
+                game.checkIfNextLevelAchieved();
+            });            
 
             //Assertions (then):
-            it("Detects if next level is achieved", function() {
+            it("Detects if next level is achieved and moves the level up by 1", function() {
                 assert.equal(game.level, 2);
             });
 
@@ -85,38 +87,31 @@ describe("Testing the model class - GameField:", function() {
 
         describe("checkIfGameOver():", function() {
 
-            //Setup:   
-            const game = new GameField();
-            for (let index = 1; index <= RIGHT_BORDER_INDEX; index++) {
-                game.tiles.get(index).occupied = false;
-            }
-            game.tiles.get(RIGHT_BORDER_INDEX + 1).occupied = true;
+            //Setup:
+            let game;
 
-            //Action:
-            const result = game.checkIfGameOver();
+            beforeEach(() => {
+                game = new GameField();
+                for (let index = 1; index <= RIGHT_BORDER_INDEX; index++) {
+                    game.tiles.get(index).occupied = false;
+                }
+                game.tiles.get(RIGHT_BORDER_INDEX + 1).occupied = true;
+            });
 
             //Assertions:
-            it("Uses the correct constant value of right border column", function() {
-                assert.isFalse(result);
-            });
-
             it("Correctly returns 'false' if first row of tiles (ind. 1-11) is unoccupied", function() {
-                assert.isFalse(result);
+                assert.isFalse(game.checkIfGameOver());
             });
-
-            //Action:
-            game.tiles.get(1).occupied = true;
 
             //Assertions:
             it("Detects if first tile of first row is occupied", function() {
+                game.tiles.get(1).occupied = true;
                 assert.isTrue(game.checkIfGameOver());
-            });
-
-            //Action:
-            game.tiles.get(11).occupied = true;
+            });            
 
             //Assertion:
             it("Detects if last tile of first row is occupied", function() {
+                game.tiles.get(10).occupied = true;
                 assert.isTrue(game.checkIfGameOver());
             });
         });
