@@ -1,4 +1,4 @@
-import {OCCUPIED_TILE_CLASS, INVISIBLE_COLUMN_INDEX, NUMBER_OF_TILES} from './constants.js';
+import {OCCUPIED_TILE_CLASS, INVISIBLE_COLUMN_INDEX, NUMBER_OF_TILES, HIDDEN_TILE_CLASS} from './constants.js';
 
 export class GameView {
     constructor() {
@@ -11,7 +11,7 @@ export class GameView {
      */
     derenderRightBorder = () => {
         for (let coordinate = INVISIBLE_COLUMN_INDEX; coordinate <= NUMBER_OF_TILES; coordinate += INVISIBLE_COLUMN_INDEX) {
-            this.tiles.get(coordinate).avatar.classList.add("main-container__tile--hidden");
+            this.tiles.get(coordinate).avatar.classList.add(HIDDEN_TILE_CLASS);
         }
     }
 

@@ -15,6 +15,8 @@ export const Shapes = {
     ELTWO: "ELTWO"
 }
 
+export const HIDDEN_TILE_CLASS = "main-container__tile--hidden";
+
 export const OCCUPIED_TILE_CLASS = "main-container__tile--occupied";
 
 export const NUMBER_OF_TILES = 220;
